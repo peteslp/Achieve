@@ -829,164 +829,178 @@ const mockStudents = [
   }
 ];
 
-// Mock scheduling data with current dates and better time slots
+// Mock scheduling data with current dates and realistic group sessions
 const mockSchedule = [
-  // Today's sessions
+  // Today's group sessions - Multiple students per time slot
   {
     id: 1,
-    studentId: 1,
-    studentName: "Alex Johnson",
-    date: "2024-12-19", // Today
+    studentIds: [1, 5, 7], // Alex Johnson, Liam Parker, Noah Thompson
+    studentNames: ["Alex Johnson", "Liam Parker", "Noah Thompson"],
+    date: "2024-12-19",
     time: "08:30",
     duration: 30,
-    type: "Individual Therapy",
-    notes: "Focus on /r/ in conversation",
-    completed: false
+    type: "Group Therapy - Articulation",
+    notes: "Articulation group: /r/ and /s/ sounds practice",
+    completed: false,
+    groupSize: 3
   },
   {
     id: 2,
-    studentId: 3,
-    studentName: "Marcus Williams", 
+    studentIds: [3, 9], // Marcus Williams, Ethan Davis
+    studentNames: ["Marcus Williams", "Ethan Davis"], 
     date: "2024-12-19",
     time: "09:00",
     duration: 30,
-    type: "Individual Therapy",
-    notes: "Fluency techniques practice",
-    completed: false
+    type: "Group Therapy - Mixed",
+    notes: "Fluency and articulation mixed group",
+    completed: false,
+    groupSize: 2
   },
   {
     id: 3,
-    studentId: 2,
-    studentName: "Sarah Chen",
+    studentIds: [2, 6, 10], // Sarah Chen, Olivia Martinez, Sophia Brown
+    studentNames: ["Sarah Chen", "Olivia Martinez", "Sophia Brown"],
     date: "2024-12-19",
     time: "10:30",
     duration: 45,
-    type: "Individual Therapy", 
-    notes: "Advanced narrative skills",
-    completed: false
+    type: "Group Therapy - Language",
+    notes: "Language development group: vocabulary and syntax",
+    completed: false,
+    groupSize: 3
   },
   {
     id: 4,
-    studentId: 4,
-    studentName: "Emma Rodriguez",
+    studentIds: [4, 8], // Emma Rodriguez, Ava Wilson
+    studentNames: ["Emma Rodriguez", "Ava Wilson"],
     date: "2024-12-19",
     time: "11:30",
     duration: 30,
-    type: "Individual Therapy",
-    notes: "Voice exercises and breathing",
-    completed: false
+    type: "Group Therapy - Advanced",
+    notes: "Advanced students: voice and leadership skills",
+    completed: false,
+    groupSize: 2
   },
   {
     id: 5,
-    studentId: 1,
-    studentName: "Alex Johnson",
+    studentIds: [1, 7, 9], // Alex Johnson, Noah Thompson, Ethan Davis
+    studentNames: ["Alex Johnson", "Noah Thompson", "Ethan Davis"],
     date: "2024-12-19",
     time: "14:00",
     duration: 30,
-    type: "Individual Therapy",
-    notes: "/r/ articulation practice",
-    completed: false
+    type: "Group Therapy - Articulation",
+    notes: "Afternoon articulation group: intensive practice",
+    completed: false,
+    groupSize: 3
   },
-  // Tomorrow's sessions
+  // Tomorrow's group sessions
   {
     id: 6,
-    studentId: 3,
-    studentName: "Marcus Williams",
+    studentIds: [3, 5, 9], // Marcus Williams, Liam Parker, Ethan Davis
+    studentNames: ["Marcus Williams", "Liam Parker", "Ethan Davis"],
     date: "2024-12-20",
     time: "08:00",
     duration: 30,
-    type: "Individual Therapy", 
-    notes: "Easy onset techniques",
-    completed: false
+    type: "Group Therapy - Mixed",
+    notes: "Mixed group: fluency and articulation focus",
+    completed: false,
+    groupSize: 3
   },
   {
     id: 7,
-    studentId: 4,
-    studentName: "Emma Rodriguez",
+    studentIds: [4, 8, 10], // Emma Rodriguez, Ava Wilson, Sophia Brown
+    studentNames: ["Emma Rodriguez", "Ava Wilson", "Sophia Brown"],
     date: "2024-12-20",
     time: "09:30",
     duration: 30,
-    type: "Individual Therapy",
-    notes: "Vocal hygiene review",
-    completed: false
+    type: "Group Therapy - Advanced",
+    notes: "Advanced group: peer mentoring and leadership",
+    completed: false,
+    groupSize: 3
   },
   {
     id: 8,
-    studentId: 2,
-    studentName: "Sarah Chen",
+    studentIds: [2, 6], // Sarah Chen, Olivia Martinez
+    studentNames: ["Sarah Chen", "Olivia Martinez"],
     date: "2024-12-20",
     time: "11:00",
     duration: 45,
-    type: "Individual Therapy",
-    notes: "Story retelling assessment",
-    completed: false
+    type: "Group Therapy - Language",
+    notes: "Language group: narrative and complex syntax",
+    completed: false,
+    groupSize: 2
   },
   {
     id: 9,
-    studentId: 1,
-    studentName: "Alex Johnson",
+    studentIds: [1, 5, 7], // Alex Johnson, Liam Parker, Noah Thompson
+    studentNames: ["Alex Johnson", "Liam Parker", "Noah Thompson"],
     date: "2024-12-20",
     time: "13:30",
     duration: 30,
-    type: "Individual Therapy",
-    notes: "Conversational speech practice",
-    completed: false
+    type: "Group Therapy - Articulation",
+    notes: "Articulation group: generalization activities",
+    completed: false,
+    groupSize: 3
   },
-  // Next week sessions  
+  // Next week group sessions  
   {
     id: 10,
-    studentId: 2,
-    studentName: "Sarah Chen", 
+    studentIds: [2, 8, 10], // Sarah Chen, Ava Wilson, Sophia Brown
+    studentNames: ["Sarah Chen", "Ava Wilson", "Sophia Brown"],
     date: "2024-12-23",
     time: "09:00",
     duration: 45,
-    type: "Individual Therapy",
-    notes: "Complex syntax practice",
-    completed: false
+    type: "Group Therapy - Language",
+    notes: "Advanced language group: peer teaching",
+    completed: false,
+    groupSize: 3
   },
   {
     id: 11,
-    studentId: 3,
-    studentName: "Marcus Williams",
+    studentIds: [3, 5, 9], // Marcus Williams, Liam Parker, Ethan Davis
+    studentNames: ["Marcus Williams", "Liam Parker", "Ethan Davis"],
     date: "2024-12-23",
     time: "10:15",
     duration: 30,
-    type: "Individual Therapy",
-    notes: "Fluency strategies",
-    completed: false
+    type: "Group Therapy - Mixed",
+    notes: "Mixed therapy group: fluency and articulation",
+    completed: false,
+    groupSize: 3
   },
   {
     id: 12,
-    studentId: 4,
-    studentName: "Emma Rodriguez",
+    studentIds: [4, 6, 7], // Emma Rodriguez, Olivia Martinez, Noah Thompson
+    studentNames: ["Emma Rodriguez", "Olivia Martinez", "Noah Thompson"],
     date: "2024-12-23",
     time: "11:00",
     duration: 30,
-    type: "Individual Therapy",
-    notes: "Volume control exercises",
-    completed: false
+    type: "Group Therapy - Mixed",
+    notes: "Mixed group: voice, language, and articulation",
+    completed: false,
+    groupSize: 3
   },
   {
     id: 13,
-    studentId: 1,
-    studentName: "Alex Johnson",
+    studentIds: [1, 5, 9], // Alex Johnson, Liam Parker, Ethan Davis
+    studentNames: ["Alex Johnson", "Liam Parker", "Ethan Davis"],
     date: "2024-12-24",
     time: "08:30",
     duration: 30,
-    type: "Individual Therapy",
-    notes: "/r/ in reading tasks",
-    completed: false
+    type: "Group Therapy - Articulation",
+    notes: "Articulation group: /r/ and multiple sounds",
+    completed: false,
+    groupSize: 3
   },
   {
     id: 14,
-    studentId: 2,
-    studentName: "Sarah Chen",
+    studentIds: [2, 8, 10], // Sarah Chen, Ava Wilson, Sophia Brown  
+    studentNames: ["Sarah Chen", "Ava Wilson", "Sophia Brown"],
     date: "2024-12-24",
     time: "10:00",
     duration: 45,
-    type: "Individual Therapy",
-    notes: "Narrative skill assessment",
-    completed: false
+    type: "Group Therapy - Language",
+    notes: "Language group: holiday-themed activities",
+    completed: false,
+    groupSize: 3
   }
 ];
 
