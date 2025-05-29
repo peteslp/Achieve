@@ -286,6 +286,9 @@ const Navigation = ({ currentUser, setIsAuthenticated }) => {
               <Link to="/dashboard" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                 Dashboard
               </Link>
+              <Link to="/schedule" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                Schedule
+              </Link>
               <Link to="/assessments" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                 Assessments
               </Link>
