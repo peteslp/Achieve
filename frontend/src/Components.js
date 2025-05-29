@@ -2265,30 +2265,43 @@ const SchedulePage = ({ currentUser }) => {
               })}
             </h3>
             
-            <div className="space-y-4">
+            <div className="space-y-3">
               {getAppointmentsForDate(selectedDate).length > 0 ? (
-                getAppointmentsForDate(selectedDate).map((appointment) => (
-                  <div key={appointment.id} className="card-hover p-6 border border-gray-200 rounded-lg">
+                getAppointmentsForDate(selectedDate)
+                  .sort((a, b) => a.time.localeCompare(b.time))
+                  .map((appointment) => (
+                  <div key={appointment.id} className="card-hover p-6 border-2 border-gray-200 rounded-lg bg-gradient-to-r from-orange-50 to-blue-50">
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-4">
-                        <div className="w-12 h-12 bg-gradient-accent rounded-full flex items-center justify-center">
-                          <span className="text-white font-bold text-sm">
+                      <div className="flex items-center space-x-6">
+                        <div className="w-16 h-16 bg-gradient-accent rounded-full flex items-center justify-center">
+                          <span className="text-white font-bold text-lg">
                             {appointment.time}
                           </span>
                         </div>
                         <div>
                           <Link 
                             to={`/student/${appointment.studentId}`}
-                            className="font-semibold text-slate-800 hover:text-orange-600 cursor-pointer"
+                            className="text-xl font-bold text-slate-800 hover:text-orange-600 cursor-pointer"
                           >
                             {appointment.studentName}
                           </Link>
-                          <p className="text-sm text-gray-600">{appointment.type} • {appointment.duration} minutes</p>
-                          <p className="text-sm text-gray-500 mt-1">{appointment.notes}</p>
+                          <p className="text-sm text-gray-600 mt-1">
+                            {appointment.type} • {appointment.duration} minutes
+                          </p>
+                          <p className="text-sm text-gray-700 mt-1 font-medium">
+                            📝 {appointment.notes}
+                          </p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            🕐 {appointment.time} - {
+                              new Date(`2024-01-01 ${appointment.time}`).getTime() + (appointment.duration * 60000) > 0 
+                                ? new Date(new Date(`2024-01-01 ${appointment.time}`).getTime() + (appointment.duration * 60000)).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })
+                                : 'End time'
+                            }
+                          </p>
                         </div>
                       </div>
-                      <div className="flex space-x-2">
-                        <Link to={`/session/${appointment.id}`} className="btn-primary text-sm">
+                      <div className="flex space-x-3">
+                        <Link to={`/session/${appointment.id}`} className="btn-primary">
                           Go To Session
                         </Link>
                         <button className="btn-outline text-sm">Edit</button>
@@ -2299,7 +2312,11 @@ const SchedulePage = ({ currentUser }) => {
               ) : (
                 <div className="text-center py-12">
                   <div className="text-4xl mb-4">📅</div>
-                  <p className="text-gray-500">No appointments scheduled for this date</p>
+                  <p className="text-gray-500 text-lg">No appointments scheduled for this date</p>
+                  <p className="text-sm text-gray-400 mt-2">Try selecting December 19-24, 2024 to see scheduled sessions</p>
+                  <button className="btn-primary mt-4">
+                    Schedule New Session
+                  </button>
                 </div>
               )}
             </div>
