@@ -19,10 +19,143 @@ const mockStudents = [
     teacher: "Ms. Rodriguez",
     therapyFrequency: "2x per week",
     notes: "Shows consistent progress with /r/ sound production. Responds well to visual cues.",
+    // IEP Information
+    iep: {
+      currentIEPDate: "2023-09-15",
+      nextIEPDate: "2024-09-15",
+      lastIEPDate: "2022-09-20",
+      iepTeamMembers: ["Ms. Rodriguez (Teacher)", "Dr. Sarah Johnson (SLP)", "Maria Lopez (School Psychologist)", "Parent: Sarah Johnson"],
+      iepGoals: "Speech articulation improvement, Reading comprehension support",
+      accommodations: ["Extra time for verbal responses", "Visual cues for articulation", "Small group instruction"],
+      iepNotes: "Annual IEP review scheduled for September 2024. Student making good progress on speech goals."
+    },
+    // Detailed Assessments
+    assessments: [
+      {
+        id: 1,
+        name: "Goldman-Fristoe Test of Articulation-3",
+        type: "Standardized Assessment",
+        date: "2024-01-10",
+        score: "85/100",
+        percentile: "16th percentile",
+        administered: "Dr. Sarah Johnson",
+        results: "Mild articulation difficulties with /r/ sound in all positions",
+        recommendations: "Continue therapy 2x/week focusing on /r/ production",
+        status: "Complete"
+      },
+      {
+        id: 2,
+        name: "CELF-5 (Clinical Evaluation of Language Fundamentals)",
+        type: "Language Assessment",
+        date: "2023-09-01",
+        score: "92/120",
+        percentile: "25th percentile", 
+        administered: "Dr. Sarah Johnson",
+        results: "Age-appropriate language skills with mild weaknesses in complex syntax",
+        recommendations: "Monitor progress, no additional language therapy needed",
+        status: "Complete"
+      },
+      {
+        id: 3,
+        name: "Articulation Progress Assessment", 
+        type: "Progress Monitoring",
+        date: "2024-01-15",
+        score: "78%",
+        percentile: "Improving",
+        administered: "Dr. Sarah Johnson",
+        results: "/r/ sound production improving in structured activities",
+        recommendations: "Continue current therapy approach",
+        status: "Complete"
+      }
+    ],
+    // Progress Monitoring Data
+    progressMonitoring: [
+      {
+        id: 1,
+        date: "2024-01-15",
+        goal: "Improve /r/ sound production",
+        activity: "Conversational speech sample",
+        accuracy: "78%",
+        notes: "Improved from 65% last week. Good carryover to conversation.",
+        dataType: "Percentage Correct",
+        trials: 20,
+        correct: 16
+      },
+      {
+        id: 2,
+        date: "2024-01-12", 
+        goal: "Improve /r/ sound production",
+        activity: "Structured word practice",
+        accuracy: "85%",
+        notes: "Excellent performance in structured setting",
+        dataType: "Percentage Correct",
+        trials: 25,
+        correct: 21
+      },
+      {
+        id: 3,
+        date: "2024-01-10",
+        goal: "Improve /r/ sound production", 
+        activity: "Sentence reading",
+        accuracy: "72%",
+        notes: "Some difficulty with /r/ in complex sentences",
+        dataType: "Percentage Correct",
+        trials: 18,
+        correct: 13
+      },
+      {
+        id: 4,
+        date: "2024-01-08",
+        goal: "Self-monitoring /r/ production",
+        activity: "Self-correction task",
+        accuracy: "60%",
+        notes: "Beginning to self-monitor. Needs more practice.",
+        dataType: "Percentage Correct", 
+        trials: 15,
+        correct: 9
+      }
+    ],
+    // Detailed Goals
     currentGoals: [
-      "Improve /r/ sound production in conversational speech with 80% accuracy",
-      "Use correct /r/ sounds in structured activities",
-      "Self-monitor /r/ production in reading tasks"
+      {
+        id: 1,
+        goal: "Improve /r/ sound production in conversational speech with 80% accuracy",
+        startDate: "2023-09-15",
+        targetDate: "2024-06-15",
+        progress: 78,
+        status: "In Progress",
+        frequency: "2x per week",
+        setting: "Individual therapy",
+        method: "Traditional articulation therapy with visual cues",
+        criteria: "80% accuracy across 3 consecutive sessions",
+        notes: "Good progress, on track to meet goal by target date"
+      },
+      {
+        id: 2,
+        goal: "Use correct /r/ sounds in structured activities with 90% accuracy",
+        startDate: "2023-09-15", 
+        targetDate: "2024-03-15",
+        progress: 85,
+        status: "In Progress",
+        frequency: "2x per week",
+        setting: "Individual therapy",
+        method: "Drill practice with immediate feedback",
+        criteria: "90% accuracy across 2 consecutive sessions",
+        notes: "Nearly ready to meet this goal, will reassess next month"
+      },
+      {
+        id: 3,
+        goal: "Self-monitor /r/ production in reading tasks with 70% accuracy",
+        startDate: "2024-01-01",
+        targetDate: "2024-05-15", 
+        progress: 60,
+        status: "In Progress",
+        frequency: "2x per week",
+        setting: "Individual therapy",
+        method: "Self-monitoring strategies and metacognitive training",
+        criteria: "70% self-correction accuracy",
+        notes: "New goal, student learning self-monitoring techniques"
+      }
     ],
     sessionHistory: [
       { date: "2024-01-15", duration: "30 min", focus: "/r/ articulation", progress: "Good" },
@@ -46,11 +179,122 @@ const mockStudents = [
     teacher: "Mr. Thompson",
     therapyFrequency: "1x per week",
     notes: "Exceptional progress in language development. Ready for advanced goals.",
+    // IEP Information
+    iep: {
+      currentIEPDate: "2023-10-12",
+      nextIEPDate: "2024-10-12",
+      lastIEPDate: "2022-10-15",
+      iepTeamMembers: ["Mr. Thompson (Teacher)", "Dr. Sarah Johnson (SLP)", "Lisa Park (Special Ed Coordinator)", "Parent: David Chen"],
+      iepGoals: "Language comprehension and expression, Academic vocabulary development",
+      accommodations: ["Extended time for writing assignments", "Graphic organizers", "Pre-teaching of vocabulary"],
+      iepNotes: "Student exceeding expectations. Consider reducing therapy frequency or transitioning to consultation model."
+    },
+    // Detailed Assessments
+    assessments: [
+      {
+        id: 1,
+        name: "CELF-5 (Clinical Evaluation of Language Fundamentals)",
+        type: "Standardized Assessment",
+        date: "2024-01-05",
+        score: "115/120",
+        percentile: "84th percentile",
+        administered: "Dr. Sarah Johnson",
+        results: "Above average language skills with strengths in vocabulary and comprehension",
+        recommendations: "Continue current therapy with focus on complex syntax",
+        status: "Complete"
+      },
+      {
+        id: 2,
+        name: "TOLD-P:4 (Test of Language Development)",
+        type: "Language Assessment",
+        date: "2023-10-01",
+        score: "108/130",
+        percentile: "70th percentile",
+        administered: "Dr. Sarah Johnson",
+        results: "Significant improvement in all language areas since last assessment",
+        recommendations: "Consider reducing therapy frequency",
+        status: "Complete"
+      }
+    ],
+    // Progress Monitoring Data
+    progressMonitoring: [
+      {
+        id: 1,
+        date: "2024-01-14",
+        goal: "Complex sentence structures",
+        activity: "Story retelling",
+        accuracy: "92%",
+        notes: "Excellent use of subordinate clauses and complex vocabulary",
+        dataType: "Percentage Correct",
+        trials: 12,
+        correct: 11
+      },
+      {
+        id: 2,
+        date: "2024-01-07",
+        goal: "Narrative skills",
+        activity: "Personal narrative",
+        accuracy: "90%",
+        notes: "Good story grammar and sequence",
+        dataType: "Percentage Correct",
+        trials: 10,
+        correct: 9
+      }
+    ],
+    // Detailed Goals
     currentGoals: [
-      "Increase MLU (Mean Length of Utterance) to 6+ words",
-      "Use complex sentence structures in conversation",
-      "Demonstrate narrative skills with story retelling",
-      "Apply grammar rules in spontaneous speech"
+      {
+        id: 1,
+        goal: "Increase MLU (Mean Length of Utterance) to 6+ words",
+        startDate: "2023-10-12",
+        targetDate: "2024-04-12",
+        progress: 92,
+        status: "Nearly Met",
+        frequency: "1x per week",
+        setting: "Individual therapy",
+        method: "Language expansion and modeling",
+        criteria: "MLU of 6+ words across 3 language samples",
+        notes: "Goal nearly achieved, preparing for next level goals"
+      },
+      {
+        id: 2,
+        goal: "Use complex sentence structures in conversation",
+        startDate: "2023-10-12",
+        targetDate: "2024-05-12",
+        progress: 88,
+        status: "In Progress",
+        frequency: "1x per week",
+        setting: "Individual therapy",
+        method: "Structured conversation practice",
+        criteria: "Use subordinate clauses in 80% of opportunities",
+        notes: "Excellent progress, very close to meeting goal"
+      },
+      {
+        id: 3,
+        goal: "Demonstrate narrative skills with story retelling",
+        startDate: "2023-10-12",
+        targetDate: "2024-03-12",
+        progress: 95,
+        status: "Met",
+        frequency: "1x per week",
+        setting: "Individual therapy",
+        method: "Story grammar instruction and practice",
+        criteria: "Include all story grammar elements in retelling",
+        notes: "Goal achieved! Ready for more advanced narrative goals"
+      },
+      {
+        id: 4,
+        goal: "Apply grammar rules in spontaneous speech",
+        startDate: "2024-01-01",
+        targetDate: "2024-06-01",
+        progress: 85,
+        status: "In Progress",
+        frequency: "1x per week",
+        setting: "Individual therapy",
+        method: "Naturalistic teaching in conversation",
+        criteria: "Correct grammar usage 90% of the time",
+        notes: "New goal showing excellent early progress"
+      }
     ],
     sessionHistory: [
       { date: "2024-01-14", duration: "45 min", focus: "Narrative skills", progress: "Excellent" },
@@ -74,9 +318,107 @@ const mockStudents = [
     teacher: "Mrs. Garcia",
     therapyFrequency: "3x per week",
     notes: "Moderate stuttering. Working on fluency techniques and confidence building.",
+    // IEP Information
+    iep: {
+      currentIEPDate: "2023-11-20",
+      nextIEPDate: "2024-11-20",
+      lastIEPDate: "2022-11-18",
+      iepTeamMembers: ["Mrs. Garcia (Teacher)", "Dr. Sarah Johnson (SLP)", "James Wilson (School Counselor)", "Parent: Angela Williams"],
+      iepGoals: "Fluency improvement, Communication confidence building",
+      accommodations: ["Allow extra time for verbal responses", "Reduce pressure for immediate responses", "Alternative communication methods when needed"],
+      iepNotes: "Student benefiting from intensive therapy. Continue current frequency and approach."
+    },
+    // Detailed Assessments
+    assessments: [
+      {
+        id: 1,
+        name: "Stuttering Severity Instrument-4 (SSI-4)",
+        type: "Fluency Assessment",
+        date: "2024-01-08",
+        score: "Moderate",
+        percentile: "Moderate severity",
+        administered: "Dr. Sarah Johnson",
+        results: "Moderate stuttering with 8% disfluency rate, primarily sound repetitions",
+        recommendations: "Continue intensive therapy 3x/week with focus on easy onset",
+        status: "Complete"
+      },
+      {
+        id: 2,
+        name: "Overall Assessment of the Speaker's Experience of Stuttering (OASES)",
+        type: "Impact Assessment",
+        date: "2023-11-15",
+        score: "Mild-Moderate",
+        percentile: "Mild-Moderate impact",
+        administered: "Dr. Sarah Johnson",
+        results: "Stuttering having mild to moderate impact on communication and daily activities",
+        recommendations: "Include confidence-building activities in therapy",
+        status: "Complete"
+      }
+    ],
+    // Progress Monitoring Data
+    progressMonitoring: [
+      {
+        id: 1,
+        date: "2024-01-12",
+        goal: "Reduce disfluencies",
+        activity: "Conversation sample",
+        accuracy: "92%", // fluency rate
+        notes: "8% disfluency rate, down from 12% last month",
+        dataType: "Fluency Percentage",
+        trials: 100,
+        correct: 92
+      },
+      {
+        id: 2,
+        date: "2024-01-10",
+        goal: "Easy onset technique",
+        activity: "Structured practice",
+        accuracy: "75%",
+        notes: "Improving with easy onset, still needs prompting",
+        dataType: "Percentage Correct",
+        trials: 20,
+        correct: 15
+      },
+      {
+        id: 3,
+        date: "2024-01-08",
+        goal: "Breathing techniques",
+        activity: "Breathing exercises",
+        accuracy: "80%",
+        notes: "Good breath support, helping with fluency",
+        dataType: "Percentage Correct",
+        trials: 15,
+        correct: 12
+      }
+    ],
+    // Detailed Goals
     currentGoals: [
-      "Reduce disfluencies to less than 5% in structured activities",
-      "Use easy onset technique in conversation"
+      {
+        id: 1,
+        goal: "Reduce disfluencies to less than 5% in structured activities",
+        startDate: "2023-11-20",
+        targetDate: "2024-08-20",
+        progress: 65,
+        status: "In Progress",
+        frequency: "3x per week",
+        setting: "Individual therapy",
+        method: "Fluency shaping techniques and easy onset",
+        criteria: "Less than 5% disfluency rate across 3 consecutive sessions",
+        notes: "Steady progress, currently at 8% disfluency rate"
+      },
+      {
+        id: 2,
+        goal: "Use easy onset technique in conversation",
+        startDate: "2023-11-20",
+        targetDate: "2024-06-20",
+        progress: 70,
+        status: "In Progress",
+        frequency: "3x per week",
+        setting: "Individual therapy",
+        method: "Systematic practice from single words to conversation",
+        criteria: "Use easy onset independently 80% of the time",
+        notes: "Good progress in structured activities, working on generalization"
+      }
     ],
     sessionHistory: [
       { date: "2024-01-12", duration: "30 min", focus: "Breathing techniques", progress: "Fair" },
@@ -100,10 +442,120 @@ const mockStudents = [
     teacher: "Ms. Brown",
     therapyFrequency: "2x per week",
     notes: "Voice quality improving with vocal hygiene program. Good compliance with exercises.",
+    // IEP Information
+    iep: {
+      currentIEPDate: "2023-08-30",
+      nextIEPDate: "2024-08-30",
+      lastIEPDate: "2022-09-05",
+      iepTeamMembers: ["Ms. Brown (Teacher)", "Dr. Sarah Johnson (SLP)", "Nurse Patricia Clark", "Parent: Maria Rodriguez"],
+      iepGoals: "Voice quality improvement, Vocal hygiene education",
+      accommodations: ["Frequent voice breaks", "Access to water throughout day", "Modified speaking assignments"],
+      iepNotes: "Excellent progress with voice therapy. Consider reducing frequency to 1x/week soon."
+    },
+    // Detailed Assessments
+    assessments: [
+      {
+        id: 1,
+        name: "CAPE-V (Consensus Auditory-Perceptual Evaluation of Voice)",
+        type: "Voice Assessment",
+        date: "2024-01-10",
+        score: "Mild",
+        percentile: "Mild voice disorder",
+        administered: "Dr. Sarah Johnson",
+        results: "Mild vocal hoarseness, improved from moderate severity 6 months ago",
+        recommendations: "Continue voice therapy with focus on vocal hygiene",
+        status: "Complete"
+      },
+      {
+        id: 2,
+        name: "Voice Handicap Index - Pediatric",
+        type: "Impact Assessment",
+        date: "2023-08-25",
+        score: "Low",
+        percentile: "Minimal impact",
+        administered: "Dr. Sarah Johnson",
+        results: "Voice disorder having minimal impact on daily activities",
+        recommendations: "Continue current therapy approach",
+        status: "Complete"
+      }
+    ],
+    // Progress Monitoring Data
+    progressMonitoring: [
+      {
+        id: 1,
+        date: "2024-01-13",
+        goal: "Appropriate vocal volume",
+        activity: "Classroom simulation",
+        accuracy: "88%",
+        notes: "Good volume control, occasional episodes of loud voice",
+        dataType: "Percentage Correct",
+        trials: 25,
+        correct: 22
+      },
+      {
+        id: 2,
+        date: "2024-01-11",
+        goal: "Proper breathing for voice",
+        activity: "Breathing exercises",
+        accuracy: "90%",
+        notes: "Excellent breath support for voice production",
+        dataType: "Percentage Correct",
+        trials: 20,
+        correct: 18
+      },
+      {
+        id: 3,
+        date: "2024-01-09",
+        goal: "Vocal hygiene knowledge",
+        activity: "Q&A session",
+        accuracy: "95%",
+        notes: "Excellent understanding of vocal hygiene principles",
+        dataType: "Percentage Correct",
+        trials: 20,
+        correct: 19
+      }
+    ],
+    // Detailed Goals
     currentGoals: [
-      "Maintain appropriate vocal volume in classroom settings",
-      "Use proper breathing for voice support",
-      "Demonstrate vocal hygiene knowledge"
+      {
+        id: 1,
+        goal: "Maintain appropriate vocal volume in classroom settings",
+        startDate: "2023-08-30",
+        targetDate: "2024-05-30",
+        progress: 88,
+        status: "In Progress",
+        frequency: "2x per week",
+        setting: "Individual therapy",
+        method: "Volume monitoring and feedback training",
+        criteria: "Appropriate volume 90% of observed intervals",
+        notes: "Great progress, nearly ready to meet goal"
+      },
+      {
+        id: 2,
+        goal: "Use proper breathing for voice support",
+        startDate: "2023-08-30",
+        targetDate: "2024-04-30",
+        progress: 90,
+        status: "Nearly Met",
+        frequency: "2x per week",
+        setting: "Individual therapy",
+        method: "Diaphragmatic breathing training",
+        criteria: "Demonstrate proper breathing technique in 90% of trials",
+        notes: "Goal nearly achieved, excellent breath support"
+      },
+      {
+        id: 3,
+        goal: "Demonstrate vocal hygiene knowledge",
+        startDate: "2023-08-30",
+        targetDate: "2024-02-28",
+        progress: 95,
+        status: "Met",
+        frequency: "2x per week",
+        setting: "Individual therapy",
+        method: "Education and practice of vocal hygiene strategies",
+        criteria: "Score 90% or higher on vocal hygiene quiz",
+        notes: "Goal achieved! Student demonstrates excellent understanding"
+      }
     ],
     sessionHistory: [
       { date: "2024-01-13", duration: "30 min", focus: "Vocal exercises", progress: "Good" },
