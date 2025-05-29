@@ -3306,20 +3306,29 @@ const SessionPage = ({ currentUser }) => {
             </div>
             <div className="flex space-x-3">
               {!sessionStarted ? (
-                <button onClick={startSession} className="btn-primary">
+                <button 
+                  onClick={startSession} 
+                  className="bg-slate-800 hover:bg-slate-700 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200"
+                >
                   Start Session
                 </button>
               ) : (
                 <div className="flex space-x-2">
-                  <span className="text-sm text-green-600 font-medium">
+                  <span className="text-sm text-green-600 font-medium flex items-center">
                     Session Active: {sessionStartTime && Math.floor((new Date() - sessionStartTime) / 60000)} min
                   </span>
-                  <button onClick={finishSession} className="btn-secondary">
+                  <button 
+                    onClick={finishSession} 
+                    className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200"
+                  >
                     Finish Session
                   </button>
                 </div>
               )}
-              <Link to="/schedule" className="btn-outline">
+              <Link 
+                to="/schedule" 
+                className="border-2 border-slate-800 text-slate-800 hover:bg-slate-800 hover:text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 inline-block text-center"
+              >
                 Back to Schedule
               </Link>
             </div>
