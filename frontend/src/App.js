@@ -91,6 +91,14 @@ function App() {
               <Navigate to="/login" />
             } 
           />
+          <Route 
+            path="/session/:sessionId" 
+            element={
+              isAuthenticated ? 
+              <Components.SessionPage currentUser={currentUser} /> : 
+              <Navigate to="/login" />
+            } 
+          />
           <Route path="/" element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} />} />
         </Routes>
       </BrowserRouter>
