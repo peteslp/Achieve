@@ -3164,6 +3164,24 @@ const SessionPage = ({ currentUser }) => {
   // Get current student
   const currentStudent = sessionStudents[currentStudentIndex];
 
+  // Add escape key listener for easy exit
+  useEffect(() => {
+    const handleEscape = (event) => {
+      if (event.key === 'Escape') {
+        if (showFinishModal) {
+          setShowFinishModal(false);
+        } else if (sessionStarted) {
+          setShowFinishModal(true);
+        } else {
+          navigate('/schedule');
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [sessionStarted, showFinishModal, navigate]);
+
   // Initialize session data for each student and their goals
   useEffect(() => {
     if (sessionStudents.length > 0) {
