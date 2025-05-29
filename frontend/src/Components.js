@@ -3328,14 +3328,51 @@ const SessionPage = ({ currentUser }) => {
 
         {sessionStarted ? (
           <>
-            {/* Goals and Data Collection */}
+            {/* Student Tabs for Group Sessions */}
+            {sessionStudents.length > 1 && (
+              <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 mb-8">
+                <h3 className="text-lg font-bold text-slate-800 mb-4">Students in Group Session</h3>
+                <div className="flex space-x-2 overflow-x-auto">
+                  {sessionStudents.map((student, index) => (
+                    <button
+                      key={index}
+                      onClick={() => {
+                        setCurrentStudentIndex(index);
+                        setCurrentGoalIndex(0); // Reset to first goal when switching students
+                      }}
+                      className={`flex-shrink-0 px-4 py-3 rounded-lg font-medium transition-colors ${
+                        currentStudentIndex === index
+                          ? 'bg-orange-500 text-white'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                    >
+                      <div className="text-center">
+                        <div className="font-semibold">{student.name}</div>
+                        <div className="text-xs opacity-75">{student.disorder}</div>
+                        {sessionData[index] && Object.values(sessionData[index]).some(goal => goal.total > 0) && (
+                          <div className="text-xs mt-1">
+                            {Math.round(Object.values(sessionData[index]).reduce((acc, goal) => 
+                              acc + (goal.total > 0 ? goal.accuracy : 0), 0) / 
+                              Object.values(sessionData[index]).filter(goal => goal.total > 0).length || 0)}% avg
+                          </div>
+                        )}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Goals and Data Collection for Current Student */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Goal Navigation */}
+              {/* Goal Navigation for Current Student */}
               <div className="lg:col-span-1">
                 <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-                  <h3 className="text-lg font-bold text-slate-800 mb-4">Session Goals</h3>
+                  <h3 className="text-lg font-bold text-slate-800 mb-4">
+                    {currentStudent.name}'s Goals
+                  </h3>
                   <div className="space-y-3">
-                    {student.currentGoals.map((goal, index) => (
+                    {currentStudent.currentGoals.map((goal, index) => (
                       <button
                         key={index}
                         onClick={() => setCurrentGoalIndex(index)}
@@ -3351,9 +3388,9 @@ const SessionPage = ({ currentUser }) => {
                         <div className="text-xs text-gray-600 line-clamp-2">
                           {goal.goal}
                         </div>
-                        {sessionData[index] && sessionData[index].total > 0 && (
+                        {sessionData[currentStudentIndex] && sessionData[currentStudentIndex][index] && sessionData[currentStudentIndex][index].total > 0 && (
                           <div className="mt-2 text-xs font-medium text-orange-600">
-                            {sessionData[index].accuracy}% ({sessionData[index].correct}/{sessionData[index].total})
+                            {sessionData[currentStudentIndex][index].accuracy}% ({sessionData[currentStudentIndex][index].correct}/{sessionData[currentStudentIndex][index].total})
                           </div>
                         )}
                       </button>
@@ -3362,15 +3399,15 @@ const SessionPage = ({ currentUser }) => {
                 </div>
               </div>
 
-              {/* Data Collection Interface */}
+              {/* Data Collection Interface for Current Student */}
               <div className="lg:col-span-2">
                 <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
                   <div className="mb-6">
                     <h3 className="text-xl font-bold text-slate-800 mb-2">
-                      Goal {currentGoalIndex + 1} Data Collection
+                      {currentStudent.name} - Goal {currentGoalIndex + 1} Data Collection
                     </h3>
                     <p className="text-gray-600">
-                      {student.currentGoals[currentGoalIndex]?.goal}
+                      {currentStudent.currentGoals[currentGoalIndex]?.goal}
                     </p>
                   </div>
 
@@ -3381,10 +3418,10 @@ const SessionPage = ({ currentUser }) => {
                       <div className="text-center">
                         <h4 className="text-lg font-semibold text-green-800 mb-4">✓ Correct</h4>
                         <div className="text-6xl font-bold text-green-600 mb-4">
-                          {sessionData[currentGoalIndex]?.correct || 0}
+                          {sessionData[currentStudentIndex]?.[currentGoalIndex]?.correct || 0}
                         </div>
                         <button
-                          onClick={() => handleTally(currentGoalIndex, 'correct')}
+                          onClick={() => handleTally(currentStudentIndex, currentGoalIndex, 'correct')}
                           className="w-20 h-20 bg-green-500 hover:bg-green-600 text-white text-4xl rounded-full font-bold transition-all transform hover:scale-105"
                         >
                           +
@@ -3395,10 +3432,10 @@ const SessionPage = ({ currentUser }) => {
                       <div className="text-center">
                         <h4 className="text-lg font-semibold text-red-800 mb-4">✗ Incorrect</h4>
                         <div className="text-6xl font-bold text-red-600 mb-4">
-                          {sessionData[currentGoalIndex]?.incorrect || 0}
+                          {sessionData[currentStudentIndex]?.[currentGoalIndex]?.incorrect || 0}
                         </div>
                         <button
-                          onClick={() => handleTally(currentGoalIndex, 'incorrect')}
+                          onClick={() => handleTally(currentStudentIndex, currentGoalIndex, 'incorrect')}
                           className="w-20 h-20 bg-red-500 hover:bg-red-600 text-white text-4xl rounded-full font-bold transition-all transform hover:scale-105"
                         >
                           +
@@ -3410,26 +3447,26 @@ const SessionPage = ({ currentUser }) => {
                     <div className="text-center border-t pt-6">
                       <div className="mb-4">
                         <span className="text-2xl font-bold text-slate-800">
-                          {sessionData[currentGoalIndex]?.accuracy || 0}% Accuracy
+                          {sessionData[currentStudentIndex]?.[currentGoalIndex]?.accuracy || 0}% Accuracy
                         </span>
                         <span className="text-gray-600 ml-2">
-                          ({sessionData[currentGoalIndex]?.correct || 0}/{sessionData[currentGoalIndex]?.total || 0} trials)
+                          ({sessionData[currentStudentIndex]?.[currentGoalIndex]?.correct || 0}/{sessionData[currentStudentIndex]?.[currentGoalIndex]?.total || 0} trials)
                         </span>
                       </div>
                       
                       <div className="w-full bg-gray-200 rounded-full h-3 mb-4">
                         <div 
                           className={`h-3 rounded-full transition-all duration-300 ${
-                            (sessionData[currentGoalIndex]?.accuracy || 0) >= 80 ? 'bg-green-500' :
-                            (sessionData[currentGoalIndex]?.accuracy || 0) >= 60 ? 'bg-yellow-500' :
+                            (sessionData[currentStudentIndex]?.[currentGoalIndex]?.accuracy || 0) >= 80 ? 'bg-green-500' :
+                            (sessionData[currentStudentIndex]?.[currentGoalIndex]?.accuracy || 0) >= 60 ? 'bg-yellow-500' :
                             'bg-red-500'
                           }`}
-                          style={{ width: `${sessionData[currentGoalIndex]?.accuracy || 0}%` }}
+                          style={{ width: `${sessionData[currentStudentIndex]?.[currentGoalIndex]?.accuracy || 0}%` }}
                         ></div>
                       </div>
 
                       <button
-                        onClick={() => resetGoalData(currentGoalIndex)}
+                        onClick={() => resetGoalData(currentStudentIndex, currentGoalIndex)}
                         className="btn-outline text-sm"
                       >
                         Reset Goal Data
@@ -3437,41 +3474,50 @@ const SessionPage = ({ currentUser }) => {
                     </div>
                   </div>
 
-                  {/* Goal Notes */}
+                  {/* Goal Notes for Current Student */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Notes for Goal {currentGoalIndex + 1}
+                      Notes for {currentStudent.name} - Goal {currentGoalIndex + 1}
                     </label>
                     <textarea
-                      value={sessionData[currentGoalIndex]?.notes || ''}
+                      value={sessionData[currentStudentIndex]?.[currentGoalIndex]?.notes || ''}
                       onChange={(e) => setSessionData(prev => ({
                         ...prev,
-                        [currentGoalIndex]: {
-                          ...prev[currentGoalIndex],
-                          notes: e.target.value
+                        [currentStudentIndex]: {
+                          ...prev[currentStudentIndex],
+                          [currentGoalIndex]: {
+                            ...prev[currentStudentIndex]?.[currentGoalIndex],
+                            notes: e.target.value
+                          }
                         }
                       }))}
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 h-20"
-                      placeholder="Add notes about this goal's performance..."
+                      placeholder={`Add notes about ${currentStudent.name}'s performance on this goal...`}
                     />
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Session Summary */}
+            {/* Session Summary for All Students */}
             <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 mt-8">
-              <h3 className="text-lg font-bold text-slate-800 mb-4">Session Summary</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                {student.currentGoals.map((goal, index) => (
-                  <div key={index} className="bg-gray-50 rounded-lg p-4">
-                    <div className="font-medium text-slate-800 mb-2">Goal {index + 1}</div>
-                    <div className="text-sm text-gray-600 mb-2">{goal.goal.substring(0, 50)}...</div>
-                    <div className="font-bold text-lg">
-                      {sessionData[index]?.accuracy || 0}%
-                    </div>
-                    <div className="text-sm text-gray-500">
-                      {sessionData[index]?.correct || 0}/{sessionData[index]?.total || 0} trials
+              <h3 className="text-lg font-bold text-slate-800 mb-4">Group Session Summary</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+                {sessionStudents.map((student, studentIndex) => (
+                  <div key={studentIndex} className="bg-gray-50 rounded-lg p-4">
+                    <div className="font-bold text-slate-800 mb-2">{student.name}</div>
+                    <div className="space-y-2">
+                      {student.currentGoals.map((goal, goalIndex) => (
+                        <div key={goalIndex} className="text-sm">
+                          <div className="text-gray-600 mb-1">Goal {goalIndex + 1}</div>
+                          <div className="font-medium">
+                            {sessionData[studentIndex]?.[goalIndex]?.accuracy || 0}%
+                          </div>
+                          <div className="text-xs text-gray-500">
+                            {sessionData[studentIndex]?.[goalIndex]?.correct || 0}/{sessionData[studentIndex]?.[goalIndex]?.total || 0} trials
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 ))}
@@ -3479,13 +3525,13 @@ const SessionPage = ({ currentUser }) => {
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Overall Session Notes
+                  Overall Group Session Notes
                 </label>
                 <textarea
                   value={sessionNotes}
                   onChange={(e) => setSessionNotes(e.target.value)}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 h-24"
-                  placeholder="Add general notes about the session..."
+                  placeholder="Add general notes about the group session..."
                 />
               </div>
             </div>
