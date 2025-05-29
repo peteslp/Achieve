@@ -3211,8 +3211,15 @@ const SessionPage = ({ currentUser }) => {
     return total > 0 ? Math.round((correct / total) * 100) : 0;
   };
 
-  // Handle tally buttons
+  // Handle tally buttons with safety checks
   const handleTally = (studentIndex, goalIndex, type) => {
+    console.log('Tally clicked:', { studentIndex, goalIndex, type });
+    
+    if (!sessionStudents[studentIndex] || !sessionStudents[studentIndex].currentGoals[goalIndex]) {
+      console.error('Invalid student or goal index');
+      return;
+    }
+    
     setSessionData(prev => {
       const updated = { ...prev };
       if (!updated[studentIndex]) updated[studentIndex] = {};
@@ -3235,6 +3242,8 @@ const SessionPage = ({ currentUser }) => {
       }
       updated[studentIndex][goalIndex].total = updated[studentIndex][goalIndex].correct + updated[studentIndex][goalIndex].incorrect;
       updated[studentIndex][goalIndex].accuracy = calculateAccuracy(updated[studentIndex][goalIndex].correct, updated[studentIndex][goalIndex].total);
+      
+      console.log('Updated session data:', updated);
       return updated;
     });
   };
