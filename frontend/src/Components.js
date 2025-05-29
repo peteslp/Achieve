@@ -2309,9 +2309,11 @@ const StudentProfilePage = ({ currentUser }) => {
             <nav className="flex space-x-8 px-6">
               {[
                 { id: 'overview', name: 'Overview' },
+                { id: 'iep', name: 'IEP Information' },
+                { id: 'assessments', name: 'Assessments' },
+                { id: 'progress-monitoring', name: 'Progress Monitoring' },
                 { id: 'goals', name: 'Goals' },
                 { id: 'sessions', name: 'Session History' },
-                { id: 'assessments', name: 'Assessments' },
                 { id: 'notes', name: 'Notes' }
               ].map((tab) => (
                 <button
