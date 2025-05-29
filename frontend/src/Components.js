@@ -3347,48 +3347,28 @@ const SessionPage = ({ currentUser }) => {
               </div>
             </div>
             <div className="flex space-x-3">
-              {!sessionStarted ? (
                 <button 
-                  onClick={(e) => {
-                    e.preventDefault();
-                    console.log('Start Session clicked!');
-                    startSession();
-                  }}
-                  className="bg-slate-800 hover:bg-slate-700 text-white font-semibold py-3 px-6 rounded-lg shadow-lg cursor-pointer"
-                  style={{ cursor: 'pointer' }}
+                  onClick={() => navigate('/schedule')}
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg"
                 >
-                  Start Session
+                  ← Back to Schedule
                 </button>
-              ) : (
-                <div className="flex space-x-2">
-                  <span className="text-sm text-green-600 font-medium flex items-center">
-                    Session Active: {sessionStartTime && Math.floor((new Date() - sessionStartTime) / 60000)} min
-                  </span>
+                {!sessionStarted ? (
                   <button 
-                    onClick={(e) => {
-                      e.preventDefault();
-                      console.log('Finish Session clicked!');
-                      finishSession();
-                    }}
-                    className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-6 rounded-lg shadow-lg cursor-pointer"
-                    style={{ cursor: 'pointer' }}
+                    onClick={() => setSessionStarted(true)}
+                    className="bg-slate-800 hover:bg-slate-700 text-white font-semibold py-3 px-6 rounded-lg"
+                  >
+                    Start Session
+                  </button>
+                ) : (
+                  <button 
+                    onClick={() => setShowFinishModal(true)}
+                    className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-6 rounded-lg"
                   >
                     Finish Session
                   </button>
-                </div>
-              )}
-              <button 
-                onClick={(e) => {
-                  e.preventDefault();
-                  console.log('Back to Schedule clicked!');
-                  quickExit();
-                }}
-                className="border-2 border-slate-800 text-slate-800 hover:bg-slate-800 hover:text-white font-semibold py-3 px-6 rounded-lg cursor-pointer"
-                style={{ cursor: 'pointer' }}
-              >
-                Back to Schedule
-              </button>
-            </div>
+                )}
+              </div>
           </div>
         </div>
 
