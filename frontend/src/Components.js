@@ -1532,7 +1532,11 @@ const CaseloadPage = ({ currentUser }) => {
                     </div>
                     
                     <div>
-                      <h4 className="font-semibold text-slate-800">{student.name}</h4>
+                      <Link to={`/student/${student.id}`} className="hover:text-orange-600">
+                        <h4 className="font-semibold text-slate-800 hover:text-orange-600 cursor-pointer">
+                          {student.name}
+                        </h4>
+                      </Link>
                       <p className="text-sm text-gray-600">{student.grade} • {student.disorder}</p>
                     </div>
                   </div>
@@ -1554,9 +1558,9 @@ const CaseloadPage = ({ currentUser }) => {
                     </div>
                     
                     <div className="flex space-x-2">
-                      <button className="btn-primary text-sm">
+                      <Link to={`/student/${student.id}`} className="btn-primary text-sm">
                         View
-                      </button>
+                      </Link>
                       <button className="btn-outline text-sm">
                         Edit
                       </button>
