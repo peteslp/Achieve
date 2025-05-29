@@ -3140,50 +3140,405 @@ const StudentProfilePage = ({ currentUser }) => {
   );
 };
 
-// Session Page Component - SIMPLIFIED VERSION
+// Session Page Component - FULL FEATURED BUT SAFE
 const SessionPage = ({ currentUser }) => {
   const { sessionId } = useParams();
   const navigate = useNavigate();
+  
+  // Find the session data
+  const session = mockSchedule.find(s => s.id === parseInt(sessionId));
+  const sessionStudents = session && session.studentIds ? 
+    session.studentIds.map(id => mockStudents.find(s => s.id === id)).filter(Boolean) : [];
+
+  // Simple, safe state management
+  const [sessionStarted, setSessionStarted] = useState(false);
+  const [currentStudentIndex, setCurrentStudentIndex] = useState(0);
+  const [currentGoalIndex, setCurrentGoalIndex] = useState(0);
+  const [tallyData, setTallyData] = useState({});
+  const [sessionNotes, setSessionNotes] = useState('');
+  const [showFinishModal, setShowFinishModal] = useState(false);
+
+  // Safe navigation function
+  const goBackToSchedule = () => {
+    console.log('Navigating back to schedule...');
+    navigate('/schedule');
+  };
+
+  // Current student helper
+  const currentStudent = sessionStudents[currentStudentIndex];
+
+  // Handle tally clicks - simplified and safe
+  const handleTally = (studentIdx, goalIdx, type) => {
+    console.log(`Tally: ${type} for student ${studentIdx}, goal ${goalIdx}`);
+    
+    const key = `${studentIdx}-${goalIdx}`;
+    setTallyData(prev => {
+      const current = prev[key] || { correct: 0, incorrect: 0 };
+      const updated = {
+        ...prev,
+        [key]: {
+          ...current,
+          [type]: current[type] + 1
+        }
+      };
+      return updated;
+    });
+  };
+
+  // Get tally data for specific student/goal
+  const getTallyData = (studentIdx, goalIdx) => {
+    const key = `${studentIdx}-${goalIdx}`;
+    const data = tallyData[key] || { correct: 0, incorrect: 0 };
+    const total = data.correct + data.incorrect;
+    const accuracy = total > 0 ? Math.round((data.correct / total) * 100) : 0;
+    return { ...data, total, accuracy };
+  };
+
+  // Reset tally data
+  const resetTally = (studentIdx, goalIdx) => {
+    const key = `${studentIdx}-${goalIdx}`;
+    setTallyData(prev => ({
+      ...prev,
+      [key]: { correct: 0, incorrect: 0 }
+    }));
+  };
+
+  // Safe session not found handler
+  if (!session || sessionStudents.length === 0) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Navigation currentUser={currentUser} />
+        <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-xl shadow-lg p-8 text-center">
+            <h1 className="text-2xl font-bold text-slate-800 mb-4">Session not found</h1>
+            <button 
+              onClick={goBackToSchedule}
+              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded"
+            >
+              ← Back to Schedule
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation currentUser={currentUser} />
       
       <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        {/* Simple Test Header */}
+        {/* Session Header */}
         <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 mb-8">
-          <h1 className="text-2xl font-bold text-slate-800 mb-4">
-            Session Page Test - Session ID: {sessionId}
-          </h1>
-          
-          <div className="space-y-4">
-            <button 
-              onClick={() => {
-                console.log('Back button clicked!');
-                navigate('/schedule');
-              }}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded"
-            >
-              ← Back to Schedule
-            </button>
-            
-            <button 
-              onClick={() => {
-                console.log('Test button clicked!');
-                alert('Button works!');
-              }}
-              className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded ml-4"
-            >
-              Test Button
-            </button>
-          </div>
-          
-          <div className="mt-4 p-4 bg-gray-100 rounded">
-            <p>If you can see this page and the buttons work, the basic navigation is functional.</p>
-            <p>Session ID from URL: {sessionId}</p>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-6">
+              <div className="w-16 h-16 bg-gradient-accent rounded-full flex items-center justify-center">
+                <span className="text-white text-xl font-bold">
+                  {sessionStudents.length > 1 ? 'G' : sessionStudents[0]?.name?.split(' ').map(n => n[0]).join('') || 'S'}
+                </span>
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-slate-800">
+                  {session.studentNames ? session.studentNames.join(', ') : 'Group Session'}
+                </h1>
+                <p className="text-gray-600">{session.type} • {session.duration} minutes</p>
+                <div className="flex items-center space-x-4 mt-2">
+                  <span className="text-sm text-gray-500">📅 {session.date}</span>
+                  <span className="text-sm text-gray-500">🕐 {session.time}</span>
+                  {session.groupSize && (
+                    <span className="text-sm text-blue-600 font-medium">👥 {session.groupSize} students</span>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="flex space-x-3">
+              <button 
+                onClick={goBackToSchedule}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg"
+              >
+                ← Back to Schedule
+              </button>
+              {!sessionStarted ? (
+                <button 
+                  onClick={() => setSessionStarted(true)}
+                  className="bg-slate-800 hover:bg-slate-700 text-white font-semibold py-3 px-6 rounded-lg"
+                >
+                  Start Session
+                </button>
+              ) : (
+                <button 
+                  onClick={() => setShowFinishModal(true)}
+                  className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-6 rounded-lg"
+                >
+                  Finish Session
+                </button>
+              )}
+            </div>
           </div>
         </div>
+
+        {sessionStarted ? (
+          <>
+            {/* Student Tabs */}
+            {sessionStudents.length > 1 && (
+              <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 mb-8">
+                <h3 className="text-lg font-bold text-slate-800 mb-4">Select Student</h3>
+                <div className="flex space-x-2 overflow-x-auto">
+                  {sessionStudents.map((student, index) => (
+                    <button
+                      key={index}
+                      onClick={() => {
+                        setCurrentStudentIndex(index);
+                        setCurrentGoalIndex(0);
+                      }}
+                      className={`flex-shrink-0 px-6 py-4 rounded-lg font-medium transition-colors ${
+                        currentStudentIndex === index
+                          ? 'bg-orange-500 text-white'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                    >
+                      <div className="text-center">
+                        <div className="font-semibold">{student.name}</div>
+                        <div className="text-xs opacity-75">{student.disorder}</div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Main Data Collection Interface */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Goals List */}
+              <div className="lg:col-span-1">
+                <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                  <h3 className="text-lg font-bold text-slate-800 mb-4">
+                    {currentStudent?.name}'s Goals
+                  </h3>
+                  {currentStudent?.currentGoals ? (
+                    <div className="space-y-3">
+                      {currentStudent.currentGoals.map((goal, index) => {
+                        const tally = getTallyData(currentStudentIndex, index);
+                        return (
+                          <button
+                            key={index}
+                            onClick={() => setCurrentGoalIndex(index)}
+                            className={`w-full text-left p-4 rounded-lg transition-colors ${
+                              currentGoalIndex === index
+                                ? 'bg-orange-100 border-2 border-orange-500'
+                                : 'bg-gray-50 border-2 border-transparent hover:bg-gray-100'
+                            }`}
+                          >
+                            <div className="font-medium text-sm text-slate-800 mb-2">
+                              Goal {index + 1}
+                            </div>
+                            <div className="text-xs text-gray-600 mb-2">
+                              {goal.goal.length > 60 ? goal.goal.substring(0, 60) + '...' : goal.goal}
+                            </div>
+                            {tally.total > 0 && (
+                              <div className="text-xs font-medium text-orange-600">
+                                {tally.accuracy}% ({tally.correct}/{tally.total})
+                              </div>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <p className="text-gray-500">No goals available</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Tally Collection */}
+              <div className="lg:col-span-2">
+                <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                  {currentStudent?.currentGoals?.[currentGoalIndex] ? (
+                    <>
+                      <div className="mb-6">
+                        <h3 className="text-xl font-bold text-slate-800 mb-2">
+                          {currentStudent.name} - Goal {currentGoalIndex + 1}
+                        </h3>
+                        <p className="text-gray-600">
+                          {currentStudent.currentGoals[currentGoalIndex].goal}
+                        </p>
+                      </div>
+
+                      {/* Tally Buttons */}
+                      <div className="bg-gray-50 rounded-lg p-8 mb-6">
+                        <div className="grid grid-cols-2 gap-12 mb-8">
+                          {/* Correct */}
+                          <div className="text-center">
+                            <h4 className="text-lg font-semibold text-green-800 mb-4">✓ Correct</h4>
+                            <div className="text-6xl font-bold text-green-600 mb-6">
+                              {getTallyData(currentStudentIndex, currentGoalIndex).correct}
+                            </div>
+                            <button
+                              onClick={() => handleTally(currentStudentIndex, currentGoalIndex, 'correct')}
+                              className="w-24 h-24 bg-green-500 hover:bg-green-600 text-white text-5xl rounded-full font-bold transition-colors shadow-lg"
+                            >
+                              +
+                            </button>
+                          </div>
+
+                          {/* Incorrect */}
+                          <div className="text-center">
+                            <h4 className="text-lg font-semibold text-red-800 mb-4">✗ Incorrect</h4>
+                            <div className="text-6xl font-bold text-red-600 mb-6">
+                              {getTallyData(currentStudentIndex, currentGoalIndex).incorrect}
+                            </div>
+                            <button
+                              onClick={() => handleTally(currentStudentIndex, currentGoalIndex, 'incorrect')}
+                              className="w-24 h-24 bg-red-500 hover:bg-red-600 text-white text-5xl rounded-full font-bold transition-colors shadow-lg"
+                            >
+                              +
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Accuracy Display */}
+                        <div className="text-center border-t pt-6">
+                          <div className="mb-4">
+                            <span className="text-3xl font-bold text-slate-800">
+                              {getTallyData(currentStudentIndex, currentGoalIndex).accuracy}% Accuracy
+                            </span>
+                            <div className="text-gray-600 mt-2">
+                              {getTallyData(currentStudentIndex, currentGoalIndex).correct} correct / {getTallyData(currentStudentIndex, currentGoalIndex).total} total trials
+                            </div>
+                          </div>
+                          
+                          <div className="w-full bg-gray-200 rounded-full h-4 mb-6">
+                            <div 
+                              className={`h-4 rounded-full transition-all duration-300 ${
+                                getTallyData(currentStudentIndex, currentGoalIndex).accuracy >= 80 ? 'bg-green-500' :
+                                getTallyData(currentStudentIndex, currentGoalIndex).accuracy >= 60 ? 'bg-yellow-500' :
+                                'bg-red-500'
+                              }`}
+                              style={{ width: `${getTallyData(currentStudentIndex, currentGoalIndex).accuracy}%` }}
+                            ></div>
+                          </div>
+
+                          <button
+                            onClick={() => resetTally(currentStudentIndex, currentGoalIndex)}
+                            className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-6 rounded-lg"
+                          >
+                            Reset Data
+                          </button>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="text-center py-12">
+                      <p className="text-gray-500">Select a goal to begin data collection</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Session Summary */}
+            <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 mt-8">
+              <h3 className="text-lg font-bold text-slate-800 mb-4">Session Summary</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+                {sessionStudents.map((student, studentIndex) => (
+                  <div key={studentIndex} className="bg-gray-50 rounded-lg p-4">
+                    <div className="font-bold text-slate-800 mb-3">{student.name}</div>
+                    <div className="space-y-2">
+                      {student.currentGoals?.map((goal, goalIndex) => {
+                        const tally = getTallyData(studentIndex, goalIndex);
+                        return (
+                          <div key={goalIndex} className="text-sm">
+                            <div className="text-gray-600">Goal {goalIndex + 1}</div>
+                            <div className="font-medium text-lg">
+                              {tally.accuracy}%
+                            </div>
+                            <div className="text-xs text-gray-500">
+                              {tally.correct}/{tally.total} trials
+                            </div>
+                          </div>
+                        );
+                      }) || <div className="text-sm text-gray-500">No goals</div>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Session Notes
+                </label>
+                <textarea
+                  value={sessionNotes}
+                  onChange={(e) => setSessionNotes(e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 h-24"
+                  placeholder="Add notes about this session..."
+                />
+              </div>
+            </div>
+          </>
+        ) : (
+          /* Pre-Session */}
+          <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+            <h3 className="text-xl font-bold text-slate-800 mb-6">Session Preparation</h3>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div>
+                <h4 className="font-semibold text-slate-800 mb-4">Students & Goals</h4>
+                <div className="space-y-4">
+                  {sessionStudents.map((student, index) => (
+                    <div key={index} className="bg-blue-50 rounded-lg p-4">
+                      <h5 className="font-medium text-blue-800 mb-2">{student.name}</h5>
+                      <div className="text-sm text-blue-700">
+                        <div>Disorder: {student.disorder}</div>
+                        <div>Goals: {student.currentGoals?.length || 0} active goals</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              <div>
+                <h4 className="font-semibold text-slate-800 mb-4">Session Details</h4>
+                <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+                  <div><strong>Focus:</strong> {session.notes}</div>
+                  <div><strong>Duration:</strong> {session.duration} minutes</div>
+                  <div><strong>Type:</strong> {session.type}</div>
+                  <div><strong>Students:</strong> {session.groupSize || sessionStudents.length}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
+
+      {/* Finish Modal */}
+      {showFinishModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full mx-4">
+            <h3 className="text-xl font-bold text-slate-800 mb-4">Finish Session</h3>
+            <p className="text-gray-600 mb-6">
+              Save session data and return to schedule?
+            </p>
+            <div className="flex space-x-4">
+              <button 
+                onClick={() => {
+                  console.log('Session data:', tallyData);
+                  console.log('Session notes:', sessionNotes);
+                  goBackToSchedule();
+                }}
+                className="bg-slate-800 hover:bg-slate-700 text-white font-semibold py-3 px-6 rounded-lg flex-1"
+              >
+                Save & Exit
+              </button>
+              <button 
+                onClick={() => setShowFinishModal(false)}
+                className="border-2 border-slate-800 text-slate-800 hover:bg-slate-800 hover:text-white font-semibold py-3 px-6 rounded-lg flex-1"
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
