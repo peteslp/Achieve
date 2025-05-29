@@ -2218,7 +2218,9 @@ const SchedulePage = ({ currentUser }) => {
                         </div>
                       </div>
                       <div className="flex space-x-2">
-                        <button className="btn-primary text-sm">Start Session</button>
+                        <Link to={`/session/${appointment.id}`} className="btn-primary text-sm">
+                          Go To Session
+                        </Link>
                         <button className="btn-outline text-sm">Edit</button>
                       </div>
                     </div>
