@@ -3542,15 +3542,24 @@ const SessionPage = ({ currentUser }) => {
             <h3 className="text-xl font-bold text-slate-800 mb-4">Session Preparation</h3>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold text-slate-800 mb-3">Today's Goals:</h4>
+                <h4 className="font-semibold text-slate-800 mb-3">
+                  {sessionStudents.length > 1 ? "Group Goals:" : "Today's Goals:"}
+                </h4>
                 <div className="space-y-3">
-                  {student.currentGoals.map((goal, index) => (
-                    <div key={index} className="bg-blue-50 rounded-lg p-3">
-                      <div className="font-medium text-blue-800 mb-1">Goal {index + 1}</div>
-                      <div className="text-sm text-blue-700">{goal.goal}</div>
-                      <div className="text-xs text-blue-600 mt-1">
-                        Current Progress: {goal.progress}%
-                      </div>
+                  {sessionStudents.map((sessionStudent, studentIndex) => (
+                    <div key={studentIndex} className="space-y-2">
+                      {sessionStudents.length > 1 && (
+                        <h5 className="font-medium text-slate-700">{sessionStudent.name}:</h5>
+                      )}
+                      {sessionStudent.currentGoals?.map((goal, index) => (
+                        <div key={index} className="bg-blue-50 rounded-lg p-3">
+                          <div className="font-medium text-blue-800 mb-1">Goal {index + 1}</div>
+                          <div className="text-sm text-blue-700">{goal.goal}</div>
+                          <div className="text-xs text-blue-600 mt-1">
+                            Current Progress: {goal.progress}%
+                          </div>
+                        </div>
+                      )) || <div className="text-gray-500 text-sm">No goals set</div>}
                     </div>
                   ))}
                 </div>
@@ -3560,8 +3569,14 @@ const SessionPage = ({ currentUser }) => {
                 <h4 className="font-semibold text-slate-800 mb-3">Session Details:</h4>
                 <div className="bg-gray-50 rounded-lg p-4 space-y-2">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Student:</span>
-                    <span className="font-medium">{student.name}</span>
+                    <span className="text-gray-600">
+                      {sessionStudents.length > 1 ? "Students:" : "Student:"}
+                    </span>
+                    <span className="font-medium">
+                      {sessionStudents.length > 1 
+                        ? sessionStudents.map(s => s.name).join(', ') 
+                        : sessionStudents[0]?.name || 'Unknown'}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Focus:</span>
@@ -3573,7 +3588,9 @@ const SessionPage = ({ currentUser }) => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Last Session:</span>
-                    <span className="font-medium">{student.lastSession}</span>
+                    <span className="font-medium">
+                      {sessionStudents[0]?.lastSession || 'No previous session'}
+                    </span>
                   </div>
                 </div>
               </div>
