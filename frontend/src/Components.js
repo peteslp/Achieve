@@ -3326,27 +3326,6 @@ const SessionPage = ({ currentUser }) => {
       <Navigation currentUser={currentUser} />
       
       <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        {/* Emergency Navigation Bar */}
-        <div className="bg-red-100 border border-red-300 rounded-lg p-4 mb-4">
-          <div className="flex items-center justify-between">
-            <span className="text-red-800 font-medium">Session Navigation</span>
-            <div className="flex space-x-2">
-              <button 
-                onClick={() => {
-                  console.log('Emergency exit clicked!');
-                  window.location.href = '/schedule';
-                }}
-                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 cursor-pointer"
-              >
-                🚨 Emergency Exit to Schedule
-              </button>
-              <Link to="/schedule" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                🔗 Link to Schedule
-              </Link>
-            </div>
-          </div>
-        </div>
-
         {/* Session Header */}
         <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 mb-8">
           <div className="flex items-center justify-between">
