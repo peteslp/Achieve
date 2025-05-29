@@ -3284,15 +3284,15 @@ const SessionPage = ({ currentUser }) => {
             <div className="flex items-center space-x-6">
               <div className="w-16 h-16 bg-gradient-accent rounded-full flex items-center justify-center">
                 <span className="text-white text-xl font-bold">
-                  {student.name.split(' ').map(n => n[0]).join('')}
+                  {sessionStudents.length > 0 ? sessionStudents[0].name.split(' ').map(n => n[0]).join('') : 'G'}
                 </span>
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-slate-800">
-                  {session.studentNames ? `Group Session: ${session.studentNames.join(', ')}` : student.name}
+                  {session.studentNames ? `Group Session: ${session.studentNames.join(', ')}` : sessionStudents[0]?.name || 'Session'}
                 </h1>
                 <p className="text-gray-600">
-                  {session.groupSize ? `${session.type} (${session.groupSize} students)` : `${student.grade} • ${student.disorder} Therapy`}
+                  {session.groupSize ? `${session.type} (${session.groupSize} students)` : `${sessionStudents[0]?.grade || ''} • ${sessionStudents[0]?.disorder || ''} Therapy`}
                 </p>
                 <div className="flex items-center space-x-4 mt-2">
                   <span className="text-sm text-gray-500">📅 {session.date}</span>
