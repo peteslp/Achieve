@@ -3667,24 +3667,14 @@ const SessionPage = ({ currentUser }) => {
             </p>
             <div className="flex space-x-4">
               <button 
-                onClick={(e) => {
-                  e.preventDefault();
-                  console.log('Save & Exit clicked!');
-                  saveAndExit();
-                }}
-                className="bg-slate-800 hover:bg-slate-700 text-white font-semibold py-3 px-6 rounded-lg shadow-lg cursor-pointer flex-1"
-                style={{ cursor: 'pointer' }}
+                onClick={() => navigate('/schedule')}
+                className="bg-slate-800 hover:bg-slate-700 text-white font-semibold py-3 px-6 rounded-lg flex-1"
               >
                 Save & Exit
               </button>
               <button 
-                onClick={(e) => {
-                  e.preventDefault();
-                  console.log('Continue Session clicked!');
-                  setShowFinishModal(false);
-                }}
-                className="border-2 border-slate-800 text-slate-800 hover:bg-slate-800 hover:text-white font-semibold py-3 px-6 rounded-lg cursor-pointer flex-1"
-                style={{ cursor: 'pointer' }}
+                onClick={() => setShowFinishModal(false)}
+                className="border-2 border-slate-800 text-slate-800 hover:bg-slate-800 hover:text-white font-semibold py-3 px-6 rounded-lg flex-1"
               >
                 Continue Session
               </button>
