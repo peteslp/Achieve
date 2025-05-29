@@ -2762,6 +2762,390 @@ const StudentProfilePage = ({ currentUser }) => {
   );
 };
 
+// Session Page Component for Live Therapy Sessions
+const SessionPage = ({ currentUser }) => {
+  const { sessionId } = useParams();
+  const navigate = useNavigate();
+  
+  // Find the appointment/session
+  const session = mockSchedule.find(s => s.id === parseInt(sessionId));
+  const student = session ? mockStudents.find(s => s.id === session.studentId) : null;
+  
+  // Session state management
+  const [sessionStarted, setSessionStarted] = useState(false);
+  const [sessionStartTime, setSessionStartTime] = useState(null);
+  const [currentGoalIndex, setCurrentGoalIndex] = useState(0);
+  const [sessionData, setSessionData] = useState({});
+  const [sessionNotes, setSessionNotes] = useState('');
+  const [showFinishModal, setShowFinishModal] = useState(false);
+
+  // Initialize session data for each goal
+  useEffect(() => {
+    if (student && student.currentGoals) {
+      const initialData = {};
+      student.currentGoals.forEach((goal, index) => {
+        initialData[index] = {
+          goalId: goal.id,
+          goalText: goal.goal,
+          correct: 0,
+          incorrect: 0,
+          total: 0,
+          accuracy: 0,
+          notes: ''
+        };
+      });
+      setSessionData(initialData);
+    }
+  }, [student]);
+
+  // Calculate accuracy percentage
+  const calculateAccuracy = (correct, total) => {
+    return total > 0 ? Math.round((correct / total) * 100) : 0;
+  };
+
+  // Handle tally buttons
+  const handleTally = (goalIndex, type) => {
+    setSessionData(prev => {
+      const updated = { ...prev };
+      if (type === 'correct') {
+        updated[goalIndex].correct += 1;
+      } else {
+        updated[goalIndex].incorrect += 1;
+      }
+      updated[goalIndex].total = updated[goalIndex].correct + updated[goalIndex].incorrect;
+      updated[goalIndex].accuracy = calculateAccuracy(updated[goalIndex].correct, updated[goalIndex].total);
+      return updated;
+    });
+  };
+
+  // Reset goal data
+  const resetGoalData = (goalIndex) => {
+    setSessionData(prev => ({
+      ...prev,
+      [goalIndex]: {
+        ...prev[goalIndex],
+        correct: 0,
+        incorrect: 0,
+        total: 0,
+        accuracy: 0
+      }
+    }));
+  };
+
+  // Start session
+  const startSession = () => {
+    setSessionStarted(true);
+    setSessionStartTime(new Date());
+  };
+
+  // Finish session
+  const finishSession = () => {
+    setShowFinishModal(true);
+  };
+
+  // Save and exit session
+  const saveAndExit = () => {
+    // Here you would typically save the session data to a backend
+    console.log('Session Data:', sessionData);
+    console.log('Session Notes:', sessionNotes);
+    navigate('/schedule');
+  };
+
+  if (!session || !student) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Navigation currentUser={currentUser} />
+        <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-slate-800">Session not found</h1>
+            <Link to="/schedule" className="text-orange-500 hover:text-orange-600 mt-4 inline-block">
+              Return to Schedule
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Navigation currentUser={currentUser} />
+      
+      <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        {/* Session Header */}
+        <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 mb-8">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-6">
+              <div className="w-16 h-16 bg-gradient-accent rounded-full flex items-center justify-center">
+                <span className="text-white text-xl font-bold">
+                  {student.name.split(' ').map(n => n[0]).join('')}
+                </span>
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-slate-800">{student.name}</h1>
+                <p className="text-gray-600">{student.grade} • {student.disorder} Therapy</p>
+                <div className="flex items-center space-x-4 mt-2">
+                  <span className="text-sm text-gray-500">📅 {session.date}</span>
+                  <span className="text-sm text-gray-500">🕐 {session.time}</span>
+                  <span className="text-sm text-gray-500">⏱️ {session.duration} minutes</span>
+                </div>
+              </div>
+            </div>
+            <div className="flex space-x-3">
+              {!sessionStarted ? (
+                <button onClick={startSession} className="btn-primary">
+                  Start Session
+                </button>
+              ) : (
+                <div className="flex space-x-2">
+                  <span className="text-sm text-green-600 font-medium">
+                    Session Active: {sessionStartTime && Math.floor((new Date() - sessionStartTime) / 60000)} min
+                  </span>
+                  <button onClick={finishSession} className="btn-secondary">
+                    Finish Session
+                  </button>
+                </div>
+              )}
+              <Link to="/schedule" className="btn-outline">
+                Back to Schedule
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {sessionStarted ? (
+          <>
+            {/* Goals and Data Collection */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Goal Navigation */}
+              <div className="lg:col-span-1">
+                <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                  <h3 className="text-lg font-bold text-slate-800 mb-4">Session Goals</h3>
+                  <div className="space-y-3">
+                    {student.currentGoals.map((goal, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentGoalIndex(index)}
+                        className={`w-full text-left p-3 rounded-lg transition-colors ${
+                          currentGoalIndex === index
+                            ? 'bg-orange-100 border-2 border-orange-500'
+                            : 'bg-gray-50 border-2 border-transparent hover:bg-gray-100'
+                        }`}
+                      >
+                        <div className="font-medium text-sm text-slate-800 mb-1">
+                          Goal {index + 1}
+                        </div>
+                        <div className="text-xs text-gray-600 line-clamp-2">
+                          {goal.goal}
+                        </div>
+                        {sessionData[index] && sessionData[index].total > 0 && (
+                          <div className="mt-2 text-xs font-medium text-orange-600">
+                            {sessionData[index].accuracy}% ({sessionData[index].correct}/{sessionData[index].total})
+                          </div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Data Collection Interface */}
+              <div className="lg:col-span-2">
+                <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                  <div className="mb-6">
+                    <h3 className="text-xl font-bold text-slate-800 mb-2">
+                      Goal {currentGoalIndex + 1} Data Collection
+                    </h3>
+                    <p className="text-gray-600">
+                      {student.currentGoals[currentGoalIndex]?.goal}
+                    </p>
+                  </div>
+
+                  {/* Tally System */}
+                  <div className="bg-gray-50 rounded-lg p-6 mb-6">
+                    <div className="grid grid-cols-2 gap-8 mb-6">
+                      {/* Correct Tally */}
+                      <div className="text-center">
+                        <h4 className="text-lg font-semibold text-green-800 mb-4">✓ Correct</h4>
+                        <div className="text-6xl font-bold text-green-600 mb-4">
+                          {sessionData[currentGoalIndex]?.correct || 0}
+                        </div>
+                        <button
+                          onClick={() => handleTally(currentGoalIndex, 'correct')}
+                          className="w-20 h-20 bg-green-500 hover:bg-green-600 text-white text-4xl rounded-full font-bold transition-all transform hover:scale-105"
+                        >
+                          +
+                        </button>
+                      </div>
+
+                      {/* Incorrect Tally */}
+                      <div className="text-center">
+                        <h4 className="text-lg font-semibold text-red-800 mb-4">✗ Incorrect</h4>
+                        <div className="text-6xl font-bold text-red-600 mb-4">
+                          {sessionData[currentGoalIndex]?.incorrect || 0}
+                        </div>
+                        <button
+                          onClick={() => handleTally(currentGoalIndex, 'incorrect')}
+                          className="w-20 h-20 bg-red-500 hover:bg-red-600 text-white text-4xl rounded-full font-bold transition-all transform hover:scale-105"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Accuracy Display */}
+                    <div className="text-center border-t pt-6">
+                      <div className="mb-4">
+                        <span className="text-2xl font-bold text-slate-800">
+                          {sessionData[currentGoalIndex]?.accuracy || 0}% Accuracy
+                        </span>
+                        <span className="text-gray-600 ml-2">
+                          ({sessionData[currentGoalIndex]?.correct || 0}/{sessionData[currentGoalIndex]?.total || 0} trials)
+                        </span>
+                      </div>
+                      
+                      <div className="w-full bg-gray-200 rounded-full h-3 mb-4">
+                        <div 
+                          className={`h-3 rounded-full transition-all duration-300 ${
+                            (sessionData[currentGoalIndex]?.accuracy || 0) >= 80 ? 'bg-green-500' :
+                            (sessionData[currentGoalIndex]?.accuracy || 0) >= 60 ? 'bg-yellow-500' :
+                            'bg-red-500'
+                          }`}
+                          style={{ width: `${sessionData[currentGoalIndex]?.accuracy || 0}%` }}
+                        ></div>
+                      </div>
+
+                      <button
+                        onClick={() => resetGoalData(currentGoalIndex)}
+                        className="btn-outline text-sm"
+                      >
+                        Reset Goal Data
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Goal Notes */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Notes for Goal {currentGoalIndex + 1}
+                    </label>
+                    <textarea
+                      value={sessionData[currentGoalIndex]?.notes || ''}
+                      onChange={(e) => setSessionData(prev => ({
+                        ...prev,
+                        [currentGoalIndex]: {
+                          ...prev[currentGoalIndex],
+                          notes: e.target.value
+                        }
+                      }))}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 h-20"
+                      placeholder="Add notes about this goal's performance..."
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Session Summary */}
+            <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 mt-8">
+              <h3 className="text-lg font-bold text-slate-800 mb-4">Session Summary</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                {student.currentGoals.map((goal, index) => (
+                  <div key={index} className="bg-gray-50 rounded-lg p-4">
+                    <div className="font-medium text-slate-800 mb-2">Goal {index + 1}</div>
+                    <div className="text-sm text-gray-600 mb-2">{goal.goal.substring(0, 50)}...</div>
+                    <div className="font-bold text-lg">
+                      {sessionData[index]?.accuracy || 0}%
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      {sessionData[index]?.correct || 0}/{sessionData[index]?.total || 0} trials
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Overall Session Notes
+                </label>
+                <textarea
+                  value={sessionNotes}
+                  onChange={(e) => setSessionNotes(e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 h-24"
+                  placeholder="Add general notes about the session..."
+                />
+              </div>
+            </div>
+          </>
+        ) : (
+          /* Pre-Session Information */
+          <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+            <h3 className="text-xl font-bold text-slate-800 mb-4">Session Preparation</h3>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div>
+                <h4 className="font-semibold text-slate-800 mb-3">Today's Goals:</h4>
+                <div className="space-y-3">
+                  {student.currentGoals.map((goal, index) => (
+                    <div key={index} className="bg-blue-50 rounded-lg p-3">
+                      <div className="font-medium text-blue-800 mb-1">Goal {index + 1}</div>
+                      <div className="text-sm text-blue-700">{goal.goal}</div>
+                      <div className="text-xs text-blue-600 mt-1">
+                        Current Progress: {goal.progress}%
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              <div>
+                <h4 className="font-semibold text-slate-800 mb-3">Session Details:</h4>
+                <div className="bg-gray-50 rounded-lg p-4 space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Student:</span>
+                    <span className="font-medium">{student.name}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Focus:</span>
+                    <span className="font-medium">{session.notes}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Duration:</span>
+                    <span className="font-medium">{session.duration} minutes</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Last Session:</span>
+                    <span className="font-medium">{student.lastSession}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Finish Session Modal */}
+      {showFinishModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full mx-4">
+            <h3 className="text-xl font-bold text-slate-800 mb-4">Finish Session</h3>
+            <p className="text-gray-600 mb-6">
+              Are you sure you want to finish this session? All data will be saved.
+            </p>
+            <div className="flex space-x-4">
+              <button onClick={saveAndExit} className="btn-primary flex-1">
+                Save & Exit
+              </button>
+              <button onClick={() => setShowFinishModal(false)} className="btn-outline flex-1">
+                Continue Session
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 // Export all components
 const Components = {
   LoginPage,
@@ -2774,6 +3158,7 @@ const Components = {
   CaseloadPage,
   SchedulePage,
   StudentProfilePage,
+  SessionPage,
   Navigation
 };
 
