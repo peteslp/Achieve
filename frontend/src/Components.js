@@ -2167,6 +2167,12 @@ const SchedulePage = ({ currentUser }) => {
                           <div className="text-orange-600 mt-1">
                             {appointment.duration}min
                           </div>
+                          <Link
+                            to={`/session/${appointment.id}`}
+                            className="inline-block mt-1 px-2 py-1 bg-orange-500 text-white text-xs rounded hover:bg-orange-600 transition-colors"
+                          >
+                            Go To Session
+                          </Link>
                         </div>
                       ))}
                     </div>
