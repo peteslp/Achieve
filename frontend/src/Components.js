@@ -3476,7 +3476,7 @@ const SessionPage = ({ currentUser }) => {
 
                       <button
                         onClick={() => resetGoalData(currentStudentIndex, currentGoalIndex)}
-                        className="btn-outline text-sm"
+                        className="border-2 border-slate-800 text-slate-800 hover:bg-slate-800 hover:text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200"
                       >
                         Reset Goal Data
                       </button>
