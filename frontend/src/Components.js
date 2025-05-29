@@ -3147,37 +3147,46 @@ const SessionPage = ({ currentUser }) => {
   
   // Find the appointment/session
   const session = mockSchedule.find(s => s.id === parseInt(sessionId));
-  // For group sessions, we'll focus on the first student but could expand this
-  const student = session && session.studentIds ? 
-    mockStudents.find(s => s.id === session.studentIds[0]) : 
-    session ? mockStudents.find(s => s.id === session.studentId) : null;
+  // Get all students in the session
+  const sessionStudents = session && session.studentIds ? 
+    session.studentIds.map(id => mockStudents.find(s => s.id === id)).filter(Boolean) : 
+    session && session.studentId ? [mockStudents.find(s => s.id === session.studentId)].filter(Boolean) : [];
   
   // Session state management
   const [sessionStarted, setSessionStarted] = useState(false);
   const [sessionStartTime, setSessionStartTime] = useState(null);
+  const [currentStudentIndex, setCurrentStudentIndex] = useState(0);
   const [currentGoalIndex, setCurrentGoalIndex] = useState(0);
   const [sessionData, setSessionData] = useState({});
   const [sessionNotes, setSessionNotes] = useState('');
   const [showFinishModal, setShowFinishModal] = useState(false);
 
-  // Initialize session data for each goal
+  // Get current student
+  const currentStudent = sessionStudents[currentStudentIndex];
+
+  // Initialize session data for each student and their goals
   useEffect(() => {
-    if (student && student.currentGoals) {
+    if (sessionStudents.length > 0) {
       const initialData = {};
-      student.currentGoals.forEach((goal, index) => {
-        initialData[index] = {
-          goalId: goal.id,
-          goalText: goal.goal,
-          correct: 0,
-          incorrect: 0,
-          total: 0,
-          accuracy: 0,
-          notes: ''
-        };
+      sessionStudents.forEach((student, studentIndex) => {
+        initialData[studentIndex] = {};
+        if (student && student.currentGoals) {
+          student.currentGoals.forEach((goal, goalIndex) => {
+            initialData[studentIndex][goalIndex] = {
+              goalId: goal.id,
+              goalText: goal.goal,
+              correct: 0,
+              incorrect: 0,
+              total: 0,
+              accuracy: 0,
+              notes: ''
+            };
+          });
+        }
       });
       setSessionData(initialData);
     }
-  }, [student]);
+  }, [sessionStudents]);
 
   // Calculate accuracy percentage
   const calculateAccuracy = (correct, total) => {
@@ -3185,30 +3194,46 @@ const SessionPage = ({ currentUser }) => {
   };
 
   // Handle tally buttons
-  const handleTally = (goalIndex, type) => {
+  const handleTally = (studentIndex, goalIndex, type) => {
     setSessionData(prev => {
       const updated = { ...prev };
-      if (type === 'correct') {
-        updated[goalIndex].correct += 1;
-      } else {
-        updated[goalIndex].incorrect += 1;
+      if (!updated[studentIndex]) updated[studentIndex] = {};
+      if (!updated[studentIndex][goalIndex]) {
+        updated[studentIndex][goalIndex] = {
+          goalId: sessionStudents[studentIndex].currentGoals[goalIndex].id,
+          goalText: sessionStudents[studentIndex].currentGoals[goalIndex].goal,
+          correct: 0,
+          incorrect: 0,
+          total: 0,
+          accuracy: 0,
+          notes: ''
+        };
       }
-      updated[goalIndex].total = updated[goalIndex].correct + updated[goalIndex].incorrect;
-      updated[goalIndex].accuracy = calculateAccuracy(updated[goalIndex].correct, updated[goalIndex].total);
+      
+      if (type === 'correct') {
+        updated[studentIndex][goalIndex].correct += 1;
+      } else {
+        updated[studentIndex][goalIndex].incorrect += 1;
+      }
+      updated[studentIndex][goalIndex].total = updated[studentIndex][goalIndex].correct + updated[studentIndex][goalIndex].incorrect;
+      updated[studentIndex][goalIndex].accuracy = calculateAccuracy(updated[studentIndex][goalIndex].correct, updated[studentIndex][goalIndex].total);
       return updated;
     });
   };
 
   // Reset goal data
-  const resetGoalData = (goalIndex) => {
+  const resetGoalData = (studentIndex, goalIndex) => {
     setSessionData(prev => ({
       ...prev,
-      [goalIndex]: {
-        ...prev[goalIndex],
-        correct: 0,
-        incorrect: 0,
-        total: 0,
-        accuracy: 0
+      [studentIndex]: {
+        ...prev[studentIndex],
+        [goalIndex]: {
+          ...prev[studentIndex][goalIndex],
+          correct: 0,
+          incorrect: 0,
+          total: 0,
+          accuracy: 0
+        }
       }
     }));
   };
@@ -3232,7 +3257,7 @@ const SessionPage = ({ currentUser }) => {
     navigate('/schedule');
   };
 
-  if (!session || !student) {
+  if (!session || sessionStudents.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50">
         <Navigation currentUser={currentUser} />
