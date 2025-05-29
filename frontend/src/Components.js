@@ -661,7 +661,11 @@ const Dashboard = ({ currentUser, setIsAuthenticated }) => {
               {mockStudents.slice(0, 4).map((student) => (
                 <div key={student.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                   <div>
-                    <h4 className="font-semibold text-slate-800">{student.name}</h4>
+                    <Link to={`/student/${student.id}`} className="hover:text-orange-600">
+                      <h4 className="font-semibold text-slate-800 hover:text-orange-600 cursor-pointer">
+                        {student.name}
+                      </h4>
+                    </Link>
                     <p className="text-sm text-gray-600">{student.grade} • {student.disorder}</p>
                   </div>
                   <div className="text-right">
