@@ -2403,33 +2403,283 @@ const StudentProfilePage = ({ currentUser }) => {
               </div>
             )}
 
-            {/* Goals Tab */}
-            {activeTab === 'goals' && (
-              <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <h3 className="text-lg font-semibold text-slate-800">Current Goals</h3>
-                  <button className="btn-primary">Add New Goal</button>
+            {/* IEP Information Tab */}
+            {activeTab === 'iep' && (
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {/* IEP Dates */}
+                  <div className="bg-blue-50 rounded-lg p-6 border border-blue-200">
+                    <h3 className="text-lg font-semibold text-blue-800 mb-4">📅 IEP Dates</h3>
+                    <div className="space-y-3">
+                      <div className="flex justify-between">
+                        <span className="text-blue-700">Current IEP Date:</span>
+                        <span className="font-medium text-blue-900">{student.iep.currentIEPDate}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-blue-700">Next IEP Date:</span>
+                        <span className="font-medium text-blue-900">{student.iep.nextIEPDate}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-blue-700">Last IEP Date:</span>
+                        <span className="font-medium text-blue-900">{student.iep.lastIEPDate}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* IEP Goals */}
+                  <div className="bg-green-50 rounded-lg p-6 border border-green-200">
+                    <h3 className="text-lg font-semibold text-green-800 mb-4">🎯 IEP Goals</h3>
+                    <p className="text-green-700">{student.iep.iepGoals}</p>
+                  </div>
                 </div>
+
+                {/* IEP Team Members */}
+                <div className="bg-purple-50 rounded-lg p-6 border border-purple-200">
+                  <h3 className="text-lg font-semibold text-purple-800 mb-4">👥 IEP Team Members</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    {student.iep.iepTeamMembers.map((member, index) => (
+                      <div key={index} className="text-purple-700">• {member}</div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Accommodations */}
+                <div className="bg-yellow-50 rounded-lg p-6 border border-yellow-200">
+                  <h3 className="text-lg font-semibold text-yellow-800 mb-4">🛠️ Accommodations</h3>
+                  <div className="space-y-2">
+                    {student.iep.accommodations.map((accommodation, index) => (
+                      <div key={index} className="text-yellow-700">• {accommodation}</div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* IEP Notes */}
+                <div className="bg-gray-50 rounded-lg p-6">
+                  <h3 className="text-lg font-semibold text-slate-800 mb-4">📝 IEP Notes</h3>
+                  <p className="text-gray-700">{student.iep.iepNotes}</p>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex space-x-4">
+                  <button className="btn-primary">Schedule IEP Meeting</button>
+                  <button className="btn-secondary">Generate IEP Report</button>
+                  <button className="btn-outline">Edit IEP Information</button>
+                </div>
+              </div>
+            )}
+
+            {/* Assessments Tab */}
+            {activeTab === 'assessments' && (
+              <div className="space-y-6">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-xl font-semibold text-slate-800">Assessment History</h3>
+                  <button className="btn-primary">New Assessment</button>
+                </div>
+                
                 <div className="space-y-4">
-                  {student.currentGoals.map((goal, index) => (
-                    <div key={index} className="bg-gray-50 rounded-lg p-4">
-                      <div className="flex justify-between items-start">
+                  {student.assessments.map((assessment) => (
+                    <div key={assessment.id} className="bg-white border border-gray-200 rounded-lg p-6 card-hover">
+                      <div className="flex items-start justify-between mb-4">
                         <div className="flex-1">
-                          <p className="font-medium text-slate-800">{goal}</p>
-                          <div className="mt-2">
-                            <div className="flex justify-between text-sm mb-1">
-                              <span>Progress</span>
-                              <span>{student.progress}%</span>
-                            </div>
-                            <div className="w-full bg-gray-200 rounded-full h-2">
-                              <div 
-                                className="bg-green-500 h-2 rounded-full progress-bar" 
-                                style={{ width: `${student.progress}%` }}
-                              ></div>
-                            </div>
+                          <h4 className="text-lg font-semibold text-slate-800 mb-2">{assessment.name}</h4>
+                          <div className="flex items-center space-x-4 mb-3">
+                            <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">
+                              {assessment.type}
+                            </span>
+                            <span className="text-gray-600 text-sm">{assessment.date}</span>
+                            <span className={`px-2 py-1 rounded text-sm ${
+                              assessment.status === 'Complete' 
+                                ? 'bg-green-100 text-green-800' 
+                                : 'bg-yellow-100 text-yellow-800'
+                            }`}>
+                              {assessment.status}
+                            </span>
                           </div>
                         </div>
-                        <button className="btn-outline text-sm ml-4">Edit</button>
+                        <div className="text-right">
+                          <div className="text-lg font-bold text-slate-800">{assessment.score}</div>
+                          <div className="text-sm text-gray-600">{assessment.percentile}</div>
+                        </div>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+                        <div>
+                          <h5 className="font-medium text-slate-800 mb-1">Results:</h5>
+                          <p className="text-gray-700 text-sm">{assessment.results}</p>
+                        </div>
+                        <div>
+                          <h5 className="font-medium text-slate-800 mb-1">Recommendations:</h5>
+                          <p className="text-gray-700 text-sm">{assessment.recommendations}</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center justify-between text-sm text-gray-600">
+                        <span>Administered by: {assessment.administered}</span>
+                        <div className="space-x-2">
+                          <button className="btn-outline text-xs">View Report</button>
+                          <button className="btn-outline text-xs">Print</button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Progress Monitoring Tab */}
+            {activeTab === 'progress-monitoring' && (
+              <div className="space-y-6">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-xl font-semibold text-slate-800">Progress Monitoring Data</h3>
+                  <button className="btn-primary">Add Data Point</button>
+                </div>
+
+                {/* Progress Chart Placeholder */}
+                <div className="bg-white rounded-lg border border-gray-200 p-6">
+                  <h4 className="text-lg font-semibold text-slate-800 mb-4">Progress Chart</h4>
+                  <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="text-4xl mb-2">📈</div>
+                      <p className="text-gray-600">Progress visualization chart would appear here</p>
+                      <p className="text-sm text-gray-500 mt-1">Showing improvement trend over time</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Progress Data Table */}
+                <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                  <div className="px-6 py-4 border-b border-gray-200">
+                    <h4 className="text-lg font-semibold text-slate-800">Data Collection</h4>
+                  </div>
+                  
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className="bg-gray-50">
+                        <tr>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Goal</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Activity</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Accuracy</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trials</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Notes</th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {student.progressMonitoring.map((data) => (
+                          <tr key={data.id} className="hover:bg-gray-50">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                              {data.date}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-900">
+                              {data.goal}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-900">
+                              {data.activity}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                                parseInt(data.accuracy) >= 80 
+                                  ? 'bg-green-100 text-green-800'
+                                  : parseInt(data.accuracy) >= 60
+                                  ? 'bg-yellow-100 text-yellow-800'
+                                  : 'bg-red-100 text-red-800'
+                              }`}>
+                                {data.accuracy}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                              {data.correct}/{data.trials}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-900">
+                              {data.notes}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Goals Tab */}
+            {activeTab === 'goals' && (
+              <div className="space-y-6">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-xl font-semibold text-slate-800">Current Goals</h3>
+                  <button className="btn-primary">Add New Goal</button>
+                </div>
+                
+                <div className="space-y-6">
+                  {student.currentGoals.map((goal) => (
+                    <div key={goal.id} className="bg-white border border-gray-200 rounded-lg p-6 card-hover">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex-1">
+                          <h4 className="text-lg font-semibold text-slate-800 mb-2">{goal.goal}</h4>
+                          <div className="flex items-center space-x-4 mb-3">
+                            <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                              goal.status === 'Met' ? 'bg-green-100 text-green-800' :
+                              goal.status === 'Nearly Met' ? 'bg-blue-100 text-blue-800' :
+                              'bg-yellow-100 text-yellow-800'
+                            }`}>
+                              {goal.status}
+                            </span>
+                            <span className="text-gray-600 text-sm">{goal.frequency}</span>
+                            <span className="text-gray-600 text-sm">{goal.setting}</span>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-2xl font-bold text-orange-600">{goal.progress}%</div>
+                          <div className="text-sm text-gray-600">Progress</div>
+                        </div>
+                      </div>
+                      
+                      <div className="mb-4">
+                        <div className="w-full bg-gray-200 rounded-full h-3">
+                          <div 
+                            className={`h-3 rounded-full progress-bar ${
+                              goal.progress >= 90 ? 'bg-green-500' :
+                              goal.progress >= 70 ? 'bg-blue-500' :
+                              goal.progress >= 50 ? 'bg-yellow-500' :
+                              'bg-red-500'
+                            }`}
+                            style={{ width: `${goal.progress}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+                        <div className="space-y-2">
+                          <div className="flex justify-between text-sm">
+                            <span className="text-gray-600">Start Date:</span>
+                            <span className="font-medium">{goal.startDate}</span>
+                          </div>
+                          <div className="flex justify-between text-sm">
+                            <span className="text-gray-600">Target Date:</span>
+                            <span className="font-medium">{goal.targetDate}</span>
+                          </div>
+                          <div className="flex justify-between text-sm">
+                            <span className="text-gray-600">Method:</span>
+                            <span className="font-medium">{goal.method}</span>
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <div className="text-sm">
+                            <span className="text-gray-600">Criteria:</span>
+                            <p className="font-medium mt-1">{goal.criteria}</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-gray-50 rounded-lg p-3 mb-4">
+                        <h5 className="font-medium text-slate-800 mb-1">Notes:</h5>
+                        <p className="text-gray-700 text-sm">{goal.notes}</p>
+                      </div>
+                      
+                      <div className="flex space-x-2">
+                        <button className="btn-primary text-sm">Update Progress</button>
+                        <button className="btn-secondary text-sm">View Data</button>
+                        <button className="btn-outline text-sm">Edit Goal</button>
                       </div>
                     </div>
                   ))}
