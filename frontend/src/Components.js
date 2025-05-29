@@ -562,6 +562,270 @@ const mockStudents = [
       { date: "2024-01-11", duration: "30 min", focus: "Breathing techniques", progress: "Excellent" },
       { date: "2024-01-09", duration: "30 min", focus: "Volume control", progress: "Good" }
     ]
+  },
+  {
+    id: 5,
+    name: "Liam Parker",
+    grade: "1st Grade",
+    goals: 2,
+    progress: 72,
+    lastSession: "2024-12-18",
+    assessmentScore: 78,
+    disorder: "Articulation",
+    status: "Active",
+    birthDate: "2017-04-10",
+    parentContact: "Jennifer Parker - (555) 234-5678",
+    email: "jennifer.parker@email.com",
+    teacher: "Mrs. Smith",
+    therapyFrequency: "2x per week",
+    notes: "Working on /s/ and /z/ sounds. Good motivation with games.",
+    iep: {
+      currentIEPDate: "2024-02-15",
+      nextIEPDate: "2025-02-15",
+      lastIEPDate: "2023-02-20",
+      iepTeamMembers: ["Mrs. Smith (Teacher)", "Dr. Sarah Johnson (SLP)", "Parent: Jennifer Parker"],
+      iepGoals: "Articulation improvement for /s/ and /z/ sounds",
+      accommodations: ["Visual cues", "Extra practice time"],
+      iepNotes: "Student responding well to therapy interventions."
+    },
+    assessments: [],
+    progressMonitoring: [],
+    currentGoals: [
+      {
+        id: 1,
+        goal: "Produce /s/ sound in initial position with 80% accuracy",
+        startDate: "2024-02-15",
+        targetDate: "2024-12-15",
+        progress: 72,
+        status: "In Progress",
+        frequency: "2x per week",
+        setting: "Small group therapy",
+        method: "Traditional articulation therapy",
+        criteria: "80% accuracy across 3 consecutive sessions",
+        notes: "Good progress in group setting"
+      }
+    ],
+    sessionHistory: []
+  },
+  {
+    id: 6,
+    name: "Olivia Martinez",
+    grade: "2nd Grade", 
+    goals: 3,
+    progress: 84,
+    lastSession: "2024-12-18",
+    assessmentScore: 87,
+    disorder: "Language",
+    status: "Active",
+    birthDate: "2016-09-22",
+    parentContact: "Carlos Martinez - (555) 345-6789",
+    email: "carlos.martinez@email.com",
+    teacher: "Mrs. Garcia",
+    therapyFrequency: "2x per week",
+    notes: "Excellent progress in vocabulary and sentence structure.",
+    iep: {
+      currentIEPDate: "2024-01-10",
+      nextIEPDate: "2025-01-10",
+      lastIEPDate: "2023-01-15",
+      iepTeamMembers: ["Mrs. Garcia (Teacher)", "Dr. Sarah Johnson (SLP)", "Parent: Carlos Martinez"],
+      iepGoals: "Language development and vocabulary expansion",
+      accommodations: ["Picture supports", "Extended time"],
+      iepNotes: "Making excellent progress toward language goals."
+    },
+    assessments: [],
+    progressMonitoring: [],
+    currentGoals: [
+      {
+        id: 1,
+        goal: "Use descriptive words in sentences",
+        startDate: "2024-01-10",
+        targetDate: "2024-11-10",
+        progress: 84,
+        status: "In Progress",
+        frequency: "2x per week",
+        setting: "Small group therapy",
+        method: "Language stimulation activities",
+        criteria: "Use 3+ descriptive words per sentence",
+        notes: "Loves group activities and peer interaction"
+      }
+    ],
+    sessionHistory: []
+  },
+  {
+    id: 7,
+    name: "Noah Thompson",
+    grade: "3rd Grade",
+    goals: 2,
+    progress: 69,
+    lastSession: "2024-12-18",
+    assessmentScore: 75,
+    disorder: "Articulation",
+    status: "Active",
+    birthDate: "2015-11-03",
+    parentContact: "Lisa Thompson - (555) 456-7890",
+    email: "lisa.thompson@email.com", 
+    teacher: "Ms. Rodriguez",
+    therapyFrequency: "2x per week",
+    notes: "Working on /r/ blends. Benefits from group practice.",
+    iep: {
+      currentIEPDate: "2024-03-05",
+      nextIEPDate: "2025-03-05",
+      lastIEPDate: "2023-03-10",
+      iepTeamMembers: ["Ms. Rodriguez (Teacher)", "Dr. Sarah Johnson (SLP)", "Parent: Lisa Thompson"],
+      iepGoals: "Articulation improvement for /r/ blends",
+      accommodations: ["Peer models", "Group practice"],
+      iepNotes: "Works well in group therapy setting."
+    },
+    assessments: [],
+    progressMonitoring: [],
+    currentGoals: [
+      {
+        id: 1,
+        goal: "Produce /r/ blends in words with 75% accuracy",
+        startDate: "2024-03-05",
+        targetDate: "2025-01-05",
+        progress: 69,
+        status: "In Progress",
+        frequency: "2x per week",
+        setting: "Small group therapy",
+        method: "Drill practice with peers",
+        criteria: "75% accuracy in structured activities",
+        notes: "Motivated by group competition"
+      }
+    ],
+    sessionHistory: []
+  },
+  {
+    id: 8,
+    name: "Ava Wilson",
+    grade: "4th Grade",
+    goals: 2,
+    progress: 91,
+    lastSession: "2024-12-18",
+    assessmentScore: 92,
+    disorder: "Language",
+    status: "Active",
+    birthDate: "2014-12-15",
+    parentContact: "Michael Wilson - (555) 567-8901",
+    email: "michael.wilson@email.com",
+    teacher: "Ms. Brown",
+    therapyFrequency: "1x per week",
+    notes: "Nearly ready for dismissal. Excellent group leader.",
+    iep: {
+      currentIEPDate: "2024-04-20",
+      nextIEPDate: "2025-04-20",
+      lastIEPDate: "2023-04-25",
+      iepTeamMembers: ["Ms. Brown (Teacher)", "Dr. Sarah Johnson (SLP)", "Parent: Michael Wilson"],
+      iepGoals: "Advanced language skills and peer modeling",
+      accommodations: ["Leadership opportunities", "Peer tutoring"],
+      iepNotes: "Consider reducing frequency or dismissal next quarter."
+    },
+    assessments: [],
+    progressMonitoring: [],
+    currentGoals: [
+      {
+        id: 1,
+        goal: "Use complex sentences in group discussions",
+        startDate: "2024-04-20",
+        targetDate: "2024-12-20",
+        progress: 91,
+        status: "Nearly Met",
+        frequency: "1x per week",
+        setting: "Small group therapy",
+        method: "Group discussion and peer modeling",
+        criteria: "Complex sentences 90% of the time",
+        notes: "Excellent peer model for other students"
+      }
+    ],
+    sessionHistory: []
+  },
+  {
+    id: 9,
+    name: "Ethan Davis",
+    grade: "1st Grade",
+    goals: 3,
+    progress: 58,
+    lastSession: "2024-12-18",
+    assessmentScore: 65,
+    disorder: "Articulation",
+    status: "Active",
+    birthDate: "2017-07-08",
+    parentContact: "Amanda Davis - (555) 678-9012",
+    email: "amanda.davis@email.com",
+    teacher: "Mrs. Smith",
+    therapyFrequency: "3x per week",
+    notes: "Multiple sound errors. Benefits from intensive group practice.",
+    iep: {
+      currentIEPDate: "2024-05-12",
+      nextIEPDate: "2025-05-12",
+      lastIEPDate: "2023-05-15",
+      iepTeamMembers: ["Mrs. Smith (Teacher)", "Dr. Sarah Johnson (SLP)", "Parent: Amanda Davis"],
+      iepGoals: "Multiple articulation sound production",
+      accommodations: ["Frequent breaks", "Visual supports", "Peer models"],
+      iepNotes: "Requires intensive intervention with group support."
+    },
+    assessments: [],
+    progressMonitoring: [],
+    currentGoals: [
+      {
+        id: 1,
+        goal: "Produce /p/, /b/, /t/, /d/ sounds correctly",
+        startDate: "2024-05-12",
+        targetDate: "2025-03-12",
+        progress: 58,
+        status: "In Progress",
+        frequency: "3x per week",
+        setting: "Small group therapy",
+        method: "Multi-sensory approach with peer models",
+        criteria: "70% accuracy across target sounds",
+        notes: "Improving slowly but steadily with group support"
+      }
+    ],
+    sessionHistory: []
+  },
+  {
+    id: 10,
+    name: "Sophia Brown",
+    grade: "5th Grade",
+    goals: 2,
+    progress: 88,
+    lastSession: "2024-12-18",
+    assessmentScore: 89,
+    disorder: "Language",
+    status: "Active",
+    birthDate: "2013-05-28",
+    parentContact: "Robert Brown - (555) 789-0123",
+    email: "robert.brown@email.com",
+    teacher: "Mr. Thompson",
+    therapyFrequency: "1x per week",
+    notes: "Advanced student helping younger peers. Great group dynamics.",
+    iep: {
+      currentIEPDate: "2024-06-08",
+      nextIEPDate: "2025-06-08",
+      lastIEPDate: "2023-06-10",
+      iepTeamMembers: ["Mr. Thompson (Teacher)", "Dr. Sarah Johnson (SLP)", "Parent: Robert Brown"],
+      iepGoals: "Advanced language skills and peer mentoring",
+      accommodations: ["Advanced materials", "Peer tutoring opportunities"],
+      iepNotes: "Excellent candidate for peer mentoring program."
+    },
+    assessments: [],
+    progressMonitoring: [],
+    currentGoals: [
+      {
+        id: 1,
+        goal: "Lead group discussions and help peers",
+        startDate: "2024-06-08",
+        targetDate: "2024-12-08",
+        progress: 88,
+        status: "Nearly Met",
+        frequency: "1x per week",
+        setting: "Small group therapy",
+        method: "Peer mentoring and leadership activities",
+        criteria: "Successfully lead 80% of group activities",
+        notes: "Natural leader, great with younger students"
+      }
+    ],
+    sessionHistory: []
   }
 ];
 
