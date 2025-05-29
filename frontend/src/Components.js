@@ -1581,6 +1581,471 @@ const CaseloadPage = ({ currentUser }) => {
   );
 };
 
+// Schedule Page Component
+const SchedulePage = ({ currentUser }) => {
+  const [viewMode, setViewMode] = useState('weekly');
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [showNewAppointment, setShowNewAppointment] = useState(false);
+
+  // Helper function to get date range for weekly view
+  const getWeekDays = (date) => {
+    const startOfWeek = new Date(date);
+    const day = startOfWeek.getDay();
+    const diff = startOfWeek.getDate() - day + (day === 0 ? -6 : 1); // adjust when day is Sunday
+    startOfWeek.setDate(diff);
+    
+    const weekDays = [];
+    for (let i = 0; i < 7; i++) {
+      const day = new Date(startOfWeek);
+      day.setDate(startOfWeek.getDate() + i);
+      weekDays.push(day.toISOString().split('T')[0]);
+    }
+    return weekDays;
+  };
+
+  const weekDays = getWeekDays(selectedDate);
+  
+  // Filter appointments for the current view
+  const getAppointmentsForDate = (date) => {
+    return mockSchedule.filter(apt => apt.date === date);
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Navigation currentUser={currentUser} />
+      
+      <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-slate-800 mb-2">Schedule</h1>
+          <p className="text-gray-600">Manage your therapy appointments and sessions.</p>
+        </div>
+
+        {/* Schedule Controls */}
+        <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 mb-8">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div className="flex items-center space-x-4">
+              <div className="flex bg-gray-100 rounded-lg p-1">
+                <button
+                  onClick={() => setViewMode('daily')}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                    viewMode === 'daily' 
+                      ? 'bg-orange-500 text-white' 
+                      : 'text-gray-600 hover:text-gray-800'
+                  }`}
+                >
+                  Daily
+                </button>
+                <button
+                  onClick={() => setViewMode('weekly')}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                    viewMode === 'weekly' 
+                      ? 'bg-orange-500 text-white' 
+                      : 'text-gray-600 hover:text-gray-800'
+                  }`}
+                >
+                  Weekly
+                </button>
+                <button
+                  onClick={() => setViewMode('monthly')}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                    viewMode === 'monthly' 
+                      ? 'bg-orange-500 text-white' 
+                      : 'text-gray-600 hover:text-gray-800'
+                  }`}
+                >
+                  Monthly
+                </button>
+              </div>
+              
+              <input
+                type="date"
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+                className="border border-gray-300 rounded-lg px-3 py-2"
+              />
+            </div>
+            
+            <button 
+              onClick={() => setShowNewAppointment(true)}
+              className="btn-primary"
+            >
+              New Appointment
+            </button>
+          </div>
+        </div>
+
+        {/* Weekly View */}
+        {viewMode === 'weekly' && (
+          <div className="bg-white rounded-xl shadow-lg border border-gray-100">
+            <div className="grid grid-cols-7 border-b border-gray-200">
+              {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, index) => (
+                <div key={day} className="p-4 text-center border-r border-gray-200 last:border-r-0">
+                  <div className="font-semibold text-slate-800">{day}</div>
+                  <div className="text-sm text-gray-600 mt-1">
+                    {new Date(weekDays[index]).getDate()}
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            <div className="grid grid-cols-7 min-h-96">
+              {weekDays.map((date, index) => {
+                const dayAppointments = getAppointmentsForDate(date);
+                return (
+                  <div key={date} className="border-r border-gray-200 last:border-r-0 p-2">
+                    <div className="space-y-2">
+                      {dayAppointments.map((appointment) => (
+                        <div
+                          key={appointment.id}
+                          className="bg-orange-100 border-l-4 border-orange-500 p-2 rounded text-xs cursor-pointer hover:bg-orange-200 transition-colors"
+                        >
+                          <div className="font-semibold text-orange-800">
+                            {appointment.time}
+                          </div>
+                          <Link 
+                            to={`/student/${appointment.studentId}`}
+                            className="text-orange-700 hover:text-orange-900"
+                          >
+                            {appointment.studentName}
+                          </Link>
+                          <div className="text-orange-600 mt-1">
+                            {appointment.duration}min
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Daily View */}
+        {viewMode === 'daily' && (
+          <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+            <h3 className="text-xl font-bold text-slate-800 mb-4">
+              Schedule for {new Date(selectedDate).toLocaleDateString('en-US', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+              })}
+            </h3>
+            
+            <div className="space-y-4">
+              {getAppointmentsForDate(selectedDate).length > 0 ? (
+                getAppointmentsForDate(selectedDate).map((appointment) => (
+                  <div key={appointment.id} className="card-hover p-6 border border-gray-200 rounded-lg">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-4">
+                        <div className="w-12 h-12 bg-gradient-accent rounded-full flex items-center justify-center">
+                          <span className="text-white font-bold text-sm">
+                            {appointment.time}
+                          </span>
+                        </div>
+                        <div>
+                          <Link 
+                            to={`/student/${appointment.studentId}`}
+                            className="font-semibold text-slate-800 hover:text-orange-600 cursor-pointer"
+                          >
+                            {appointment.studentName}
+                          </Link>
+                          <p className="text-sm text-gray-600">{appointment.type} • {appointment.duration} minutes</p>
+                          <p className="text-sm text-gray-500 mt-1">{appointment.notes}</p>
+                        </div>
+                      </div>
+                      <div className="flex space-x-2">
+                        <button className="btn-primary text-sm">Start Session</button>
+                        <button className="btn-outline text-sm">Edit</button>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="text-center py-12">
+                  <div className="text-4xl mb-4">📅</div>
+                  <p className="text-gray-500">No appointments scheduled for this date</p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Monthly View */}
+        {viewMode === 'monthly' && (
+          <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+            <h3 className="text-xl font-bold text-slate-800 mb-4">Monthly Overview</h3>
+            <div className="text-center py-12">
+              <div className="text-4xl mb-4">🗓️</div>
+              <p className="text-gray-500">Monthly calendar view coming soon</p>
+              <p className="text-sm text-gray-400 mt-2">Use weekly or daily view for detailed scheduling</p>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// Student Profile Page Component
+const StudentProfilePage = ({ currentUser }) => {
+  const { studentId } = useParams();
+  const student = mockStudents.find(s => s.id === parseInt(studentId));
+  const [activeTab, setActiveTab] = useState('overview');
+
+  if (!student) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Navigation currentUser={currentUser} />
+        <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-slate-800">Student not found</h1>
+            <Link to="/caseload" className="text-orange-500 hover:text-orange-600 mt-4 inline-block">
+              Return to Caseload
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Navigation currentUser={currentUser} />
+      
+      <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        {/* Student Header */}
+        <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 mb-8">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-6">
+              <div className="w-20 h-20 bg-gradient-accent rounded-full flex items-center justify-center">
+                <span className="text-white text-2xl font-bold">
+                  {student.name.split(' ').map(n => n[0]).join('')}
+                </span>
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-slate-800">{student.name}</h1>
+                <p className="text-gray-600 text-lg">{student.grade} • {student.disorder}</p>
+                <div className="flex items-center space-x-4 mt-2">
+                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                    student.status === 'Active' 
+                      ? 'bg-green-100 text-green-800' 
+                      : 'bg-gray-100 text-gray-800'
+                  }`}>
+                    {student.status}
+                  </span>
+                  <span className="text-sm text-gray-500">Progress: {student.progress}%</span>
+                </div>
+              </div>
+            </div>
+            <div className="flex space-x-3">
+              <button className="btn-primary">Schedule Session</button>
+              <button className="btn-secondary">New Assessment</button>
+              <button className="btn-outline">Edit Profile</button>
+            </div>
+          </div>
+        </div>
+
+        {/* Tab Navigation */}
+        <div className="bg-white rounded-xl shadow-lg border border-gray-100 mb-8">
+          <div className="border-b border-gray-200">
+            <nav className="flex space-x-8 px-6">
+              {[
+                { id: 'overview', name: 'Overview' },
+                { id: 'goals', name: 'Goals' },
+                { id: 'sessions', name: 'Session History' },
+                { id: 'assessments', name: 'Assessments' },
+                { id: 'notes', name: 'Notes' }
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                    activeTab === tab.id
+                      ? 'border-orange-500 text-orange-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }`}
+                >
+                  {tab.name}
+                </button>
+              ))}
+            </nav>
+          </div>
+
+          {/* Tab Content */}
+          <div className="p-6">
+            {/* Overview Tab */}
+            {activeTab === 'overview' && (
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {/* Basic Information */}
+                  <div className="bg-gray-50 rounded-lg p-6">
+                    <h3 className="text-lg font-semibold text-slate-800 mb-4">Basic Information</h3>
+                    <div className="space-y-3">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Birth Date:</span>
+                        <span className="font-medium">{student.birthDate}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Grade:</span>
+                        <span className="font-medium">{student.grade}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Teacher:</span>
+                        <span className="font-medium">{student.teacher}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Therapy Frequency:</span>
+                        <span className="font-medium">{student.therapyFrequency}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Contact Information */}
+                  <div className="bg-gray-50 rounded-lg p-6">
+                    <h3 className="text-lg font-semibold text-slate-800 mb-4">Contact Information</h3>
+                    <div className="space-y-3">
+                      <div>
+                        <span className="text-gray-600 block">Parent/Guardian:</span>
+                        <span className="font-medium">{student.parentContact}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-600 block">Email:</span>
+                        <span className="font-medium">{student.email}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Progress Summary */}
+                <div className="bg-gray-50 rounded-lg p-6">
+                  <h3 className="text-lg font-semibold text-slate-800 mb-4">Progress Summary</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-orange-600">{student.progress}%</div>
+                      <div className="text-gray-600">Overall Progress</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-blue-600">{student.goals}</div>
+                      <div className="text-gray-600">Active Goals</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-green-600">{student.assessmentScore}</div>
+                      <div className="text-gray-600">Last Assessment</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Notes */}
+                <div className="bg-gray-50 rounded-lg p-6">
+                  <h3 className="text-lg font-semibold text-slate-800 mb-4">Clinical Notes</h3>
+                  <p className="text-gray-700">{student.notes}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Goals Tab */}
+            {activeTab === 'goals' && (
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-lg font-semibold text-slate-800">Current Goals</h3>
+                  <button className="btn-primary">Add New Goal</button>
+                </div>
+                <div className="space-y-4">
+                  {student.currentGoals.map((goal, index) => (
+                    <div key={index} className="bg-gray-50 rounded-lg p-4">
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                          <p className="font-medium text-slate-800">{goal}</p>
+                          <div className="mt-2">
+                            <div className="flex justify-between text-sm mb-1">
+                              <span>Progress</span>
+                              <span>{student.progress}%</span>
+                            </div>
+                            <div className="w-full bg-gray-200 rounded-full h-2">
+                              <div 
+                                className="bg-green-500 h-2 rounded-full progress-bar" 
+                                style={{ width: `${student.progress}%` }}
+                              ></div>
+                            </div>
+                          </div>
+                        </div>
+                        <button className="btn-outline text-sm ml-4">Edit</button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Session History Tab */}
+            {activeTab === 'sessions' && (
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-lg font-semibold text-slate-800">Session History</h3>
+                  <button className="btn-primary">Add Session Note</button>
+                </div>
+                <div className="space-y-4">
+                  {student.sessionHistory.map((session, index) => (
+                    <div key={index} className="bg-gray-50 rounded-lg p-4">
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-4 mb-2">
+                            <span className="font-medium text-slate-800">{session.date}</span>
+                            <span className="text-gray-600">{session.duration}</span>
+                            <span className={`px-2 py-1 rounded text-xs font-medium ${
+                              session.progress === 'Excellent' ? 'bg-green-100 text-green-800' :
+                              session.progress === 'Good' ? 'bg-blue-100 text-blue-800' :
+                              'bg-yellow-100 text-yellow-800'
+                            }`}>
+                              {session.progress}
+                            </span>
+                          </div>
+                          <p className="text-gray-700">Focus: {session.focus}</p>
+                        </div>
+                        <button className="btn-outline text-sm">View Details</button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Assessments Tab */}
+            {activeTab === 'assessments' && (
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-lg font-semibold text-slate-800">Assessment History</h3>
+                  <button className="btn-primary">New Assessment</button>
+                </div>
+                <div className="text-center py-12">
+                  <div className="text-4xl mb-4">📋</div>
+                  <p className="text-gray-500">Assessment history will appear here</p>
+                  <p className="text-sm text-gray-400 mt-2">Current assessment score: {student.assessmentScore}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Notes Tab */}
+            {activeTab === 'notes' && (
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-lg font-semibold text-slate-800">Clinical Notes</h3>
+                  <button className="btn-primary">Add Note</button>
+                </div>
+                <div className="bg-gray-50 rounded-lg p-6">
+                  <p className="text-gray-700 whitespace-pre-line">{student.notes}</p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Export all components
 const Components = {
   LoginPage,
@@ -1591,6 +2056,8 @@ const Components = {
   GoalsPage,
   AIToolsPage,
   CaseloadPage,
+  SchedulePage,
+  StudentProfilePage,
   Navigation
 };
 
