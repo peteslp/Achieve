@@ -3265,22 +3265,32 @@ const SessionPage = ({ currentUser }) => {
     }));
   };
 
-  // Start session
+  // Start session with debugging
   const startSession = () => {
+    console.log('Starting session...');
     setSessionStarted(true);
     setSessionStartTime(new Date());
   };
 
-  // Finish session
+  // Finish session with debugging
   const finishSession = () => {
+    console.log('Finishing session...');
     setShowFinishModal(true);
   };
 
-  // Save and exit session
+  // Save and exit session with debugging
   const saveAndExit = () => {
-    // Here you would typically save the session data to a backend
+    console.log('Saving and exiting session...');
     console.log('Session Data:', sessionData);
     console.log('Session Notes:', sessionNotes);
+    setShowFinishModal(false);
+    setSessionStarted(false);
+    navigate('/schedule');
+  };
+
+  // Quick exit function
+  const quickExit = () => {
+    console.log('Quick exit to schedule...');
     navigate('/schedule');
   };
 
