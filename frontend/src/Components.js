@@ -3168,19 +3168,13 @@ const SessionPage = ({ currentUser }) => {
   useEffect(() => {
     const handleEscape = (event) => {
       if (event.key === 'Escape') {
-        if (showFinishModal) {
-          setShowFinishModal(false);
-        } else if (sessionStarted) {
-          setShowFinishModal(true);
-        } else {
-          navigate('/schedule');
-        }
+        navigate('/schedule');
       }
     };
 
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
-  }, [sessionStarted, showFinishModal, navigate]);
+  }, [navigate]);
 
   // Initialize session data for each student and their goals
   useEffect(() => {
