@@ -3487,8 +3487,14 @@ const SessionPage = ({ currentUser }) => {
                           {sessionData[currentStudentIndex]?.[currentGoalIndex]?.incorrect || 0}
                         </div>
                         <button
-                          onClick={() => handleTally(currentStudentIndex, currentGoalIndex, 'incorrect')}
-                          className="w-20 h-20 bg-red-500 hover:bg-red-600 text-white text-4xl rounded-full font-bold transition-all transform hover:scale-105"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            console.log('Incorrect button clicked!');
+                            handleTally(currentStudentIndex, currentGoalIndex, 'incorrect');
+                          }}
+                          className="w-20 h-20 bg-red-500 hover:bg-red-600 text-white text-4xl rounded-full font-bold cursor-pointer"
+                          style={{ cursor: 'pointer' }}
                         >
                           +
                         </button>
