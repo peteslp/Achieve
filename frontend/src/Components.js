@@ -2557,14 +2557,16 @@ const SchedulePage = ({ currentUser }) => {
                           </span>
                         </div>
                         <div>
-                          <Link 
-                            to={`/student/${appointment.studentId}`}
-                            className="text-xl font-bold text-slate-800 hover:text-orange-600 cursor-pointer"
-                          >
-                            {appointment.studentName}
-                          </Link>
+                          <div className="text-xl font-bold text-slate-800 mb-2">
+                            {appointment.studentNames ? appointment.studentNames.join(', ') : appointment.studentName}
+                          </div>
                           <p className="text-sm text-gray-600 mt-1">
                             {appointment.type} • {appointment.duration} minutes
+                            {appointment.groupSize && (
+                              <span className="ml-2 bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">
+                                Group of {appointment.groupSize}
+                              </span>
+                            )}
                           </p>
                           <p className="text-sm text-gray-700 mt-1 font-medium">
                             📝 {appointment.notes}
