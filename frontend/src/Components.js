@@ -2202,53 +2202,54 @@ const SchedulePage = ({ currentUser }) => {
         {/* Weekly View */}
         {viewMode === 'weekly' && (
           <div className="bg-white rounded-xl shadow-lg border border-gray-100">
-            <div className="grid grid-cols-7 border-b border-gray-200">
+            <div className="grid grid-cols-8 border-b border-gray-200">
+              <div className="p-4 text-center border-r border-gray-200 bg-gray-50">
+                <div className="font-semibold text-slate-800">Time</div>
+              </div>
               {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, index) => (
                 <div key={day} className="p-4 text-center border-r border-gray-200 last:border-r-0">
                   <div className="font-semibold text-slate-800">{day}</div>
                   <div className="text-sm text-gray-600 mt-1">
-                    {new Date(weekDays[index]).getDate()}
+                    {new Date(weekDays[index]).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                   </div>
                 </div>
               ))}
             </div>
             
-            <div className="grid grid-cols-7 min-h-96">
-              {weekDays.map((date, index) => {
-                const dayAppointments = getAppointmentsForDate(date);
-                return (
-                  <div key={date} className="border-r border-gray-200 last:border-r-0 p-2">
-                    <div className="space-y-2">
+            {/* Time slots from 8:00 AM to 4:00 PM */}
+            {['08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30'].map((timeSlot) => (
+              <div key={timeSlot} className="grid grid-cols-8 border-b border-gray-100 min-h-16">
+                <div className="p-3 border-r border-gray-200 bg-gray-50 flex items-center">
+                  <span className="text-sm font-medium text-gray-700">{timeSlot}</span>
+                </div>
+                {weekDays.map((date, dayIndex) => {
+                  const dayAppointments = getAppointmentsForDate(date).filter(apt => apt.time === timeSlot);
+                  return (
+                    <div key={`${date}-${timeSlot}`} className="border-r border-gray-200 last:border-r-0 p-2 relative">
                       {dayAppointments.map((appointment) => (
                         <div
                           key={appointment.id}
-                          className="bg-orange-100 border-l-4 border-orange-500 p-2 rounded text-xs cursor-pointer hover:bg-orange-200 transition-colors"
+                          className="bg-gradient-accent text-white rounded-lg p-2 text-xs cursor-pointer hover:opacity-90 transition-opacity mb-1"
                         >
-                          <div className="font-semibold text-orange-800">
-                            {appointment.time}
-                          </div>
-                          <Link 
-                            to={`/student/${appointment.studentId}`}
-                            className="text-orange-700 hover:text-orange-900"
-                          >
+                          <div className="font-semibold mb-1">
                             {appointment.studentName}
-                          </Link>
-                          <div className="text-orange-600 mt-1">
-                            {appointment.duration}min
+                          </div>
+                          <div className="text-xs opacity-90 mb-2">
+                            {appointment.time} - {appointment.duration}min
                           </div>
                           <Link
                             to={`/session/${appointment.id}`}
-                            className="inline-block mt-1 px-2 py-1 bg-orange-500 text-white text-xs rounded hover:bg-orange-600 transition-colors"
+                            className="inline-block w-full text-center py-1 bg-white bg-opacity-20 text-white text-xs rounded hover:bg-opacity-30 transition-colors"
                           >
                             Go To Session
                           </Link>
                         </div>
                       ))}
                     </div>
-                  </div>
-                );
-              })}
-            </div>
+                  );
+                })}
+              </div>
+            ))}
           </div>
         )}
 
