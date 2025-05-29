@@ -2108,8 +2108,8 @@ const CaseloadPage = ({ currentUser }) => {
 
 // Schedule Page Component
 const SchedulePage = ({ currentUser }) => {
-  const [viewMode, setViewMode] = useState('weekly');
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [viewMode, setViewMode] = useState('daily'); // Start with daily view
+  const [selectedDate, setSelectedDate] = useState('2024-12-19'); // Default to date with sessions
   const [showNewAppointment, setShowNewAppointment] = useState(false);
 
   // Helper function to get date range for weekly view
