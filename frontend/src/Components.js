@@ -3344,8 +3344,13 @@ const SessionPage = ({ currentUser }) => {
             <div className="flex space-x-3">
               {!sessionStarted ? (
                 <button 
-                  onClick={startSession} 
-                  className="bg-slate-800 hover:bg-slate-700 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    console.log('Start Session clicked!');
+                    startSession();
+                  }}
+                  className="bg-slate-800 hover:bg-slate-700 text-white font-semibold py-3 px-6 rounded-lg shadow-lg cursor-pointer"
+                  style={{ cursor: 'pointer' }}
                 >
                   Start Session
                 </button>
@@ -3355,19 +3360,29 @@ const SessionPage = ({ currentUser }) => {
                     Session Active: {sessionStartTime && Math.floor((new Date() - sessionStartTime) / 60000)} min
                   </span>
                   <button 
-                    onClick={finishSession} 
-                    className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      console.log('Finish Session clicked!');
+                      finishSession();
+                    }}
+                    className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-6 rounded-lg shadow-lg cursor-pointer"
+                    style={{ cursor: 'pointer' }}
                   >
                     Finish Session
                   </button>
                 </div>
               )}
-              <Link 
-                to="/schedule" 
-                className="border-2 border-slate-800 text-slate-800 hover:bg-slate-800 hover:text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 inline-block text-center"
+              <button 
+                onClick={(e) => {
+                  e.preventDefault();
+                  console.log('Back to Schedule clicked!');
+                  quickExit();
+                }}
+                className="border-2 border-slate-800 text-slate-800 hover:bg-slate-800 hover:text-white font-semibold py-3 px-6 rounded-lg cursor-pointer"
+                style={{ cursor: 'pointer' }}
               >
                 Back to Schedule
-              </Link>
+              </button>
             </div>
           </div>
         </div>
