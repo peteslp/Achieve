@@ -3262,12 +3262,19 @@ const SessionPage = ({ currentUser }) => {
                 </span>
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-slate-800">{student.name}</h1>
-                <p className="text-gray-600">{student.grade} • {student.disorder} Therapy</p>
+                <h1 className="text-2xl font-bold text-slate-800">
+                  {session.studentNames ? `Group Session: ${session.studentNames.join(', ')}` : student.name}
+                </h1>
+                <p className="text-gray-600">
+                  {session.groupSize ? `${session.type} (${session.groupSize} students)` : `${student.grade} • ${student.disorder} Therapy`}
+                </p>
                 <div className="flex items-center space-x-4 mt-2">
                   <span className="text-sm text-gray-500">📅 {session.date}</span>
                   <span className="text-sm text-gray-500">🕐 {session.time}</span>
                   <span className="text-sm text-gray-500">⏱️ {session.duration} minutes</span>
+                  {session.groupSize && (
+                    <span className="text-sm text-blue-600 font-medium">👥 Group of {session.groupSize}</span>
+                  )}
                 </div>
               </div>
             </div>
