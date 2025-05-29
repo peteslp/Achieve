@@ -565,14 +565,15 @@ const mockStudents = [
   }
 ];
 
-// Mock scheduling data
+// Mock scheduling data with current dates and better time slots
 const mockSchedule = [
+  // Today's sessions
   {
     id: 1,
     studentId: 1,
     studentName: "Alex Johnson",
-    date: "2024-01-16",
-    time: "09:00",
+    date: "2024-12-19", // Today
+    time: "08:30",
     duration: 30,
     type: "Individual Therapy",
     notes: "Focus on /r/ in conversation",
@@ -581,9 +582,9 @@ const mockSchedule = [
   {
     id: 2,
     studentId: 3,
-    studentName: "Marcus Williams",
-    date: "2024-01-16",
-    time: "09:45",
+    studentName: "Marcus Williams", 
+    date: "2024-12-19",
+    time: "09:00",
     duration: 30,
     type: "Individual Therapy",
     notes: "Fluency techniques practice",
@@ -593,10 +594,10 @@ const mockSchedule = [
     id: 3,
     studentId: 2,
     studentName: "Sarah Chen",
-    date: "2024-01-16",
+    date: "2024-12-19",
     time: "10:30",
     duration: 45,
-    type: "Individual Therapy",
+    type: "Individual Therapy", 
     notes: "Advanced narrative skills",
     completed: false
   },
@@ -604,7 +605,7 @@ const mockSchedule = [
     id: 4,
     studentId: 4,
     studentName: "Emma Rodriguez",
-    date: "2024-01-16",
+    date: "2024-12-19",
     time: "11:30",
     duration: 30,
     type: "Individual Therapy",
@@ -615,21 +616,22 @@ const mockSchedule = [
     id: 5,
     studentId: 1,
     studentName: "Alex Johnson",
-    date: "2024-01-17",
-    time: "10:00",
+    date: "2024-12-19",
+    time: "14:00",
     duration: 30,
     type: "Individual Therapy",
     notes: "/r/ articulation practice",
     completed: false
   },
+  // Tomorrow's sessions
   {
     id: 6,
     studentId: 3,
     studentName: "Marcus Williams",
-    date: "2024-01-17",
-    time: "14:00",
+    date: "2024-12-20",
+    time: "08:00",
     duration: 30,
-    type: "Individual Therapy",
+    type: "Individual Therapy", 
     notes: "Easy onset techniques",
     completed: false
   },
@@ -637,7 +639,7 @@ const mockSchedule = [
     id: 7,
     studentId: 4,
     studentName: "Emma Rodriguez",
-    date: "2024-01-18",
+    date: "2024-12-20",
     time: "09:30",
     duration: 30,
     type: "Individual Therapy",
@@ -648,11 +650,78 @@ const mockSchedule = [
     id: 8,
     studentId: 2,
     studentName: "Sarah Chen",
-    date: "2024-01-19",
+    date: "2024-12-20",
     time: "11:00",
     duration: 45,
     type: "Individual Therapy",
     notes: "Story retelling assessment",
+    completed: false
+  },
+  {
+    id: 9,
+    studentId: 1,
+    studentName: "Alex Johnson",
+    date: "2024-12-20",
+    time: "13:30",
+    duration: 30,
+    type: "Individual Therapy",
+    notes: "Conversational speech practice",
+    completed: false
+  },
+  // Next week sessions  
+  {
+    id: 10,
+    studentId: 2,
+    studentName: "Sarah Chen", 
+    date: "2024-12-23",
+    time: "09:00",
+    duration: 45,
+    type: "Individual Therapy",
+    notes: "Complex syntax practice",
+    completed: false
+  },
+  {
+    id: 11,
+    studentId: 3,
+    studentName: "Marcus Williams",
+    date: "2024-12-23",
+    time: "10:15",
+    duration: 30,
+    type: "Individual Therapy",
+    notes: "Fluency strategies",
+    completed: false
+  },
+  {
+    id: 12,
+    studentId: 4,
+    studentName: "Emma Rodriguez",
+    date: "2024-12-23",
+    time: "11:00",
+    duration: 30,
+    type: "Individual Therapy",
+    notes: "Volume control exercises",
+    completed: false
+  },
+  {
+    id: 13,
+    studentId: 1,
+    studentName: "Alex Johnson",
+    date: "2024-12-24",
+    time: "08:30",
+    duration: 30,
+    type: "Individual Therapy",
+    notes: "/r/ in reading tasks",
+    completed: false
+  },
+  {
+    id: 14,
+    studentId: 2,
+    studentName: "Sarah Chen",
+    date: "2024-12-24",
+    time: "10:00",
+    duration: 45,
+    type: "Individual Therapy",
+    notes: "Narrative skill assessment",
     completed: false
   }
 ];
