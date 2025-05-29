@@ -2406,6 +2406,7 @@ const SchedulePage = ({ currentUser }) => {
     return weekDays;
   };
 
+  // Use the selected date for weekly view
   const weekDays = getWeekDays(selectedDate);
   
   // Filter appointments for the current view
