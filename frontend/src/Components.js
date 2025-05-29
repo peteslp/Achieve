@@ -3146,7 +3146,10 @@ const SessionPage = ({ currentUser }) => {
   
   // Find the appointment/session
   const session = mockSchedule.find(s => s.id === parseInt(sessionId));
-  const student = session ? mockStudents.find(s => s.id === session.studentId) : null;
+  // For group sessions, we'll focus on the first student but could expand this
+  const student = session && session.studentIds ? 
+    mockStudents.find(s => s.id === session.studentIds[0]) : 
+    session ? mockStudents.find(s => s.id === session.studentId) : null;
   
   // Session state management
   const [sessionStarted, setSessionStarted] = useState(false);
