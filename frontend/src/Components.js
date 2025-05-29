@@ -2510,7 +2510,17 @@ const SchedulePage = ({ currentUser }) => {
                           className="bg-gradient-accent text-white rounded-lg p-2 text-xs cursor-pointer hover:opacity-90 transition-opacity mb-1"
                         >
                           <div className="font-semibold mb-1">
-                            {appointment.studentName}
+                            {appointment.studentNames ? (
+                              <div>
+                                <div className="text-xs opacity-90">Group of {appointment.groupSize}</div>
+                                <div className="font-bold">{appointment.studentNames.slice(0, 2).join(', ')}</div>
+                                {appointment.studentNames.length > 2 && (
+                                  <div className="text-xs">+{appointment.studentNames.length - 2} more</div>
+                                )}
+                              </div>
+                            ) : (
+                              appointment.studentName
+                            )}
                           </div>
                           <div className="text-xs opacity-90 mb-2">
                             {appointment.time} - {appointment.duration}min
