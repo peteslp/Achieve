@@ -3617,10 +3617,16 @@ const SessionPage = ({ currentUser }) => {
               Are you sure you want to finish this session? All data will be saved.
             </p>
             <div className="flex space-x-4">
-              <button onClick={saveAndExit} className="btn-primary flex-1">
+              <button 
+                onClick={saveAndExit} 
+                className="bg-slate-800 hover:bg-slate-700 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-200 flex-1"
+              >
                 Save & Exit
               </button>
-              <button onClick={() => setShowFinishModal(false)} className="btn-outline flex-1">
+              <button 
+                onClick={() => setShowFinishModal(false)} 
+                className="border-2 border-slate-800 text-slate-800 hover:bg-slate-800 hover:text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 flex-1"
+              >
                 Continue Session
               </button>
             </div>
