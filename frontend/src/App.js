@@ -75,6 +75,22 @@ function App() {
               <Navigate to="/login" />
             } 
           />
+          <Route 
+            path="/schedule" 
+            element={
+              isAuthenticated ? 
+              <Components.SchedulePage currentUser={currentUser} /> : 
+              <Navigate to="/login" />
+            } 
+          />
+          <Route 
+            path="/student/:studentId" 
+            element={
+              isAuthenticated ? 
+              <Components.StudentProfilePage currentUser={currentUser} /> : 
+              <Navigate to="/login" />
+            } 
+          />
           <Route path="/" element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} />} />
         </Routes>
       </BrowserRouter>
