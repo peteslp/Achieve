@@ -3288,9 +3288,20 @@ const SessionPage = ({ currentUser }) => {
     navigate('/schedule');
   };
 
-  // Quick exit function
+  // Quick exit function with enhanced debugging
   const quickExit = () => {
-    console.log('Quick exit to schedule...');
+    console.log('Quick exit to schedule - Current state:', { sessionStarted, showFinishModal });
+    console.log('Attempting navigation to /schedule...');
+    
+    // Force reset all states before navigation
+    setSessionStarted(false);
+    setShowFinishModal(false);
+    setCurrentStudentIndex(0);
+    setCurrentGoalIndex(0);
+    setSessionData({});
+    setSessionNotes('');
+    
+    // Navigate back to schedule
     navigate('/schedule');
   };
 
