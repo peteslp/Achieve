@@ -12,7 +12,23 @@ const mockStudents = [
     lastSession: "2024-01-15",
     assessmentScore: 85,
     disorder: "Articulation",
-    status: "Active"
+    status: "Active",
+    birthDate: "2015-03-12",
+    parentContact: "Sarah Johnson - (555) 123-4567",
+    email: "sarah.johnson@email.com",
+    teacher: "Ms. Rodriguez",
+    therapyFrequency: "2x per week",
+    notes: "Shows consistent progress with /r/ sound production. Responds well to visual cues.",
+    currentGoals: [
+      "Improve /r/ sound production in conversational speech with 80% accuracy",
+      "Use correct /r/ sounds in structured activities",
+      "Self-monitor /r/ production in reading tasks"
+    ],
+    sessionHistory: [
+      { date: "2024-01-15", duration: "30 min", focus: "/r/ articulation", progress: "Good" },
+      { date: "2024-01-12", duration: "30 min", focus: "Conversational speech", progress: "Excellent" },
+      { date: "2024-01-10", duration: "30 min", focus: "/r/ in sentences", progress: "Fair" }
+    ]
   },
   {
     id: 2,
@@ -23,7 +39,24 @@ const mockStudents = [
     lastSession: "2024-01-14",
     assessmentScore: 91,
     disorder: "Language",
-    status: "Active"
+    status: "Active",
+    birthDate: "2013-08-22",
+    parentContact: "David Chen - (555) 987-6543",
+    email: "david.chen@email.com",
+    teacher: "Mr. Thompson",
+    therapyFrequency: "1x per week",
+    notes: "Exceptional progress in language development. Ready for advanced goals.",
+    currentGoals: [
+      "Increase MLU (Mean Length of Utterance) to 6+ words",
+      "Use complex sentence structures in conversation",
+      "Demonstrate narrative skills with story retelling",
+      "Apply grammar rules in spontaneous speech"
+    ],
+    sessionHistory: [
+      { date: "2024-01-14", duration: "45 min", focus: "Narrative skills", progress: "Excellent" },
+      { date: "2024-01-07", duration: "45 min", focus: "Complex sentences", progress: "Good" },
+      { date: "2024-01-05", duration: "45 min", focus: "Grammar practice", progress: "Excellent" }
+    ]
   },
   {
     id: 3,
@@ -34,7 +67,22 @@ const mockStudents = [
     lastSession: "2024-01-12",
     assessmentScore: 72,
     disorder: "Fluency",
-    status: "Active"
+    status: "Active",
+    birthDate: "2016-11-05",
+    parentContact: "Angela Williams - (555) 456-7890",
+    email: "angela.williams@email.com",
+    teacher: "Mrs. Garcia",
+    therapyFrequency: "3x per week",
+    notes: "Moderate stuttering. Working on fluency techniques and confidence building.",
+    currentGoals: [
+      "Reduce disfluencies to less than 5% in structured activities",
+      "Use easy onset technique in conversation"
+    ],
+    sessionHistory: [
+      { date: "2024-01-12", duration: "30 min", focus: "Breathing techniques", progress: "Fair" },
+      { date: "2024-01-10", duration: "30 min", focus: "Easy onset", progress: "Good" },
+      { date: "2024-01-08", duration: "30 min", focus: "Fluency strategies", progress: "Fair" }
+    ]
   },
   {
     id: 4,
@@ -45,7 +93,115 @@ const mockStudents = [
     lastSession: "2024-01-13",
     assessmentScore: 89,
     disorder: "Voice",
-    status: "Active"
+    status: "Active",
+    birthDate: "2014-06-18",
+    parentContact: "Maria Rodriguez - (555) 321-0987",
+    email: "maria.rodriguez@email.com",
+    teacher: "Ms. Brown",
+    therapyFrequency: "2x per week",
+    notes: "Voice quality improving with vocal hygiene program. Good compliance with exercises.",
+    currentGoals: [
+      "Maintain appropriate vocal volume in classroom settings",
+      "Use proper breathing for voice support",
+      "Demonstrate vocal hygiene knowledge"
+    ],
+    sessionHistory: [
+      { date: "2024-01-13", duration: "30 min", focus: "Vocal exercises", progress: "Good" },
+      { date: "2024-01-11", duration: "30 min", focus: "Breathing techniques", progress: "Excellent" },
+      { date: "2024-01-09", duration: "30 min", focus: "Volume control", progress: "Good" }
+    ]
+  }
+];
+
+// Mock scheduling data
+const mockSchedule = [
+  {
+    id: 1,
+    studentId: 1,
+    studentName: "Alex Johnson",
+    date: "2024-01-16",
+    time: "09:00",
+    duration: 30,
+    type: "Individual Therapy",
+    notes: "Focus on /r/ in conversation",
+    completed: false
+  },
+  {
+    id: 2,
+    studentId: 3,
+    studentName: "Marcus Williams",
+    date: "2024-01-16",
+    time: "09:45",
+    duration: 30,
+    type: "Individual Therapy",
+    notes: "Fluency techniques practice",
+    completed: false
+  },
+  {
+    id: 3,
+    studentId: 2,
+    studentName: "Sarah Chen",
+    date: "2024-01-16",
+    time: "10:30",
+    duration: 45,
+    type: "Individual Therapy",
+    notes: "Advanced narrative skills",
+    completed: false
+  },
+  {
+    id: 4,
+    studentId: 4,
+    studentName: "Emma Rodriguez",
+    date: "2024-01-16",
+    time: "11:30",
+    duration: 30,
+    type: "Individual Therapy",
+    notes: "Voice exercises and breathing",
+    completed: false
+  },
+  {
+    id: 5,
+    studentId: 1,
+    studentName: "Alex Johnson",
+    date: "2024-01-17",
+    time: "10:00",
+    duration: 30,
+    type: "Individual Therapy",
+    notes: "/r/ articulation practice",
+    completed: false
+  },
+  {
+    id: 6,
+    studentId: 3,
+    studentName: "Marcus Williams",
+    date: "2024-01-17",
+    time: "14:00",
+    duration: 30,
+    type: "Individual Therapy",
+    notes: "Easy onset techniques",
+    completed: false
+  },
+  {
+    id: 7,
+    studentId: 4,
+    studentName: "Emma Rodriguez",
+    date: "2024-01-18",
+    time: "09:30",
+    duration: 30,
+    type: "Individual Therapy",
+    notes: "Vocal hygiene review",
+    completed: false
+  },
+  {
+    id: 8,
+    studentId: 2,
+    studentName: "Sarah Chen",
+    date: "2024-01-19",
+    time: "11:00",
+    duration: 45,
+    type: "Individual Therapy",
+    notes: "Story retelling assessment",
+    completed: false
   }
 ];
 
